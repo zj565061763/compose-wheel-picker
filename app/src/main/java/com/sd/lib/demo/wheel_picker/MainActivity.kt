@@ -51,7 +51,7 @@ private fun MainView() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        SampleCustomUnfocusedCount()
+        SampleObserveIndex()
     }
 }
 
@@ -147,11 +147,14 @@ private fun SampleObserveIndex() {
         modifier = Modifier.width(60.dp),
         count = 50,
         state = state,
+        onIndexChanged = {
+            Log.i(TAG, "onIndexChanged ${state.currentIndex}")
+        },
     ) {
         Text(it.toString())
     }
 
-    // Observe currentIndex.
+    // Observe currentIndex, It is same with the onIndexChanged callback.
     LaunchedEffect(state) {
         snapshotFlow { state.currentIndex }
             .distinctUntilChanged()
