@@ -70,9 +70,9 @@ class FWheelPickerState(
      * Note that this property is observable and if you use it in the composable function
      * it will be recomposed on every change causing potential performance issues.
      */
-    @get:IntRange(from = 0)
+    @get:IntRange(from = -1)
     val currentIndexSnapshot: Int
-        get() = mostStartItemInfo?.index ?: 0
+        get() = mostStartItemInfo?.index ?: -1
 
     suspend fun scrollToIndex(
         @IntRange(from = 0) index: Int,
