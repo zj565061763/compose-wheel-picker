@@ -102,14 +102,11 @@ private fun WheelPicker(
     require(unfocusedCount >= 1) { "unfocusedCount must be >= 1" }
 
     val stateUpdate by rememberUpdatedState(state)
-    LaunchedEffect(count, state) {
-        val maxIndex = count - 1
-        if (state.currentIndex > maxIndex) {
-            state.currentIndex = maxIndex
-        }
+    LaunchedEffect(state, count) {
+        state.notifyCountChanged(count)
     }
     LaunchedEffect(state) {
-        state.updateCurrentIndex()
+        state.synchronizeCurrentIndex()
     }
 
     val density = LocalDensity.current

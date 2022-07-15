@@ -61,15 +61,8 @@ class FWheelPickerState(
      * it will be recomposed on every change causing potential performance issues.
      */
     @get:IntRange(from = -1)
-    var currentIndex: Int
+    val currentIndex: Int
         get() = _currentIndex
-        internal set(value) {
-            val safeValue = value.coerceAtLeast(-1)
-            if (_currentIndex != safeValue) {
-                _currentIndex = safeValue
-                logMsg { "Current index changed:$safeValue" }
-            }
-        }
 
     /**
      * Index of picker.
@@ -85,18 +78,33 @@ class FWheelPickerState(
         @IntRange(from = 0) index: Int,
     ) {
         lazyListState.scrollToItem(index.coerceAtLeast(0))
-        updateCurrentIndex()
+        synchronizeCurrentIndex()
     }
 
     suspend fun animateScrollToIndex(
         @IntRange(from = 0) index: Int,
     ) {
         lazyListState.animateScrollToItem(index.coerceAtLeast(0))
-        updateCurrentIndex()
+        synchronizeCurrentIndex()
     }
 
-    internal fun updateCurrentIndex() {
-        currentIndex = currentIndexSnapshot
+    internal fun notifyCountChanged(count: Int) {
+        val maxIndex = count - 1
+        if (_currentIndex > maxIndex) {
+            updateCurrentIndexInternal(maxIndex)
+        }
+    }
+
+    internal fun synchronizeCurrentIndex() {
+        updateCurrentIndexInternal(currentIndexSnapshot)
+    }
+
+    private fun updateCurrentIndexInternal(index: Int) {
+        val safeIndex = index.coerceAtLeast(-1)
+        if (_currentIndex != safeIndex) {
+            _currentIndex = safeIndex
+            logMsg { "Current index changed:$safeIndex" }
+        }
     }
 
     override val isScrollInProgress: Boolean
