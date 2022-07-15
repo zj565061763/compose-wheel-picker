@@ -32,6 +32,9 @@ class FWheelPickerState(
 
     private var _currentIndex by mutableStateOf(-1)
 
+    /**
+     * The item closest to the viewport start.
+     */
     internal val mostStartItemInfo: LazyListItemInfo?
         get() {
             val layoutInfo = lazyListState.layoutInfo
@@ -54,7 +57,8 @@ class FWheelPickerState(
     /**
      * Index of picker when it is not scrolling.
      *
-     * Note that this property is observable and if you use it in the composable function it will be recomposed on every change causing potential performance issues.
+     * Note that this property is observable and if you use it in the composable function
+     * it will be recomposed on every change causing potential performance issues.
      */
     @get:IntRange(from = -1)
     var currentIndex: Int
@@ -70,7 +74,8 @@ class FWheelPickerState(
     /**
      * Index of picker.
      *
-     * Note that this property is observable and if you use it in the composable function it will be recomposed on every change causing potential performance issues.
+     * Note that this property is observable and if you use it in the composable function
+     * it will be recomposed on every change causing potential performance issues.
      */
     @get:IntRange(from = 0)
     val currentIndexSnapshot: Int
