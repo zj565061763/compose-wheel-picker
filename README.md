@@ -104,6 +104,9 @@ FVerticalWheelPicker(
 
 ### Observe index
 
+* `FWheelPickerState.currentIndex` - Index of picker when it is idle.
+* `FWheelPickerState.currentIndexSnapshot` - Index of picker when it is idle or scrolling but not fling.
+
 ```kotlin
 val state = rememberFWheelPickerState()
 FVerticalWheelPicker(
