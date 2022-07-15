@@ -77,8 +77,10 @@ fun FWheelPickerFocusHorizontal(
  * Default content wrapper.
  */
 val DefaultWheelPickerContentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit = { index, state ->
-    val alpha = if (state.currentIndexSnapshot == index) 1.0f else 0.3f
-    val animateScale by animateFloatAsState(if (state.currentIndexSnapshot == index) 1.0f else 0.8f)
+    val isFocus = index == state.currentIndexSnapshot
+    val alpha = if (isFocus) 1.0f else 0.3f
+    val scale = if (isFocus) 1.0f else 0.8f
+    val animateScale by animateFloatAsState(scale)
     Box(
         modifier = Modifier
             .alpha(alpha)
