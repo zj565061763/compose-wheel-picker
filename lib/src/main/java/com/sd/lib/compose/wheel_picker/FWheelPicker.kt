@@ -11,7 +11,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -120,9 +122,14 @@ private fun WheelPicker(
     val decay = remember(density) { splineBasedDecay<Float>(density) }
     val nestedScrollConnection = remember(density, isVertical, reverseLayout) {
         object : NestedScrollConnection {
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                stateUpdate.synchronizeCurrentIndexSnapshot()
+                return super.onPostScroll(consumed, available, source)
+            }
+
             override suspend fun onPreFling(available: Velocity): Velocity {
                 val state = stateUpdate
-                val currentIndex = state.currentIndexSnapshot
+                val currentIndex = state.synchronizeCurrentIndexSnapshot()
                 return if (currentIndex >= 0) {
                     val flingItemCount = available
                         .percentVelocity(

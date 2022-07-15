@@ -31,11 +31,18 @@ class FWheelPickerState(
     internal val lazyListState = LazyListState(firstVisibleItemIndex = initialIndex)
 
     private var _currentIndex by mutableStateOf(-1)
+    private var _currentIndexSnapshot by mutableStateOf(-1)
+
+    /**
+     * The item index closest to the viewport start.
+     */
+    private val _mostStartItemIndex: Int
+        get() = _mostStartItemInfo?.index ?: -1
 
     /**
      * The item closest to the viewport start.
      */
-    private val mostStartItemInfo: LazyListItemInfo?
+    private val _mostStartItemInfo: LazyListItemInfo?
         get() {
             val layoutInfo = lazyListState.layoutInfo
             val listInfo = layoutInfo.visibleItemsInfo
@@ -55,7 +62,7 @@ class FWheelPickerState(
         get() = lazyListState.interactionSource
 
     /**
-     * Index of picker when it is not scrolling.
+     * Index of picker when it is idle.
      *
      * Note that this property is observable and if you use it in the composable function
      * it will be recomposed on every change.
@@ -65,14 +72,14 @@ class FWheelPickerState(
         get() = _currentIndex
 
     /**
-     * Index of picker.
+     * Index of picker when it is idle or scrolling but not fling.
      *
      * Note that this property is observable and if you use it in the composable function
      * it will be recomposed on every change.
      */
     @get:IntRange(from = -1)
     val currentIndexSnapshot: Int
-        get() = mostStartItemInfo?.index ?: -1
+        get() = _currentIndexSnapshot
 
     suspend fun scrollToIndex(
         @IntRange(from = 0) index: Int,
@@ -96,7 +103,8 @@ class FWheelPickerState(
     }
 
     internal fun synchronizeCurrentIndex() {
-        updateCurrentIndexInternal(currentIndexSnapshot)
+        updateCurrentIndexInternal(_mostStartItemIndex)
+        synchronizeCurrentIndexSnapshot()
     }
 
     private fun updateCurrentIndexInternal(index: Int) {
@@ -105,6 +113,11 @@ class FWheelPickerState(
             _currentIndex = safeIndex
             logMsg { "Current index changed:$safeIndex" }
         }
+    }
+
+    internal fun synchronizeCurrentIndexSnapshot(): Int {
+        _currentIndexSnapshot = _mostStartItemIndex
+        return _currentIndexSnapshot
     }
 
     override val isScrollInProgress: Boolean
