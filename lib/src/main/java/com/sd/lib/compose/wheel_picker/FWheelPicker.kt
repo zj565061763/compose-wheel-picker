@@ -103,10 +103,13 @@ private fun WheelPicker(
 
     val stateUpdate by rememberUpdatedState(state)
     LaunchedEffect(count, state) {
-        val maxIndex = (count - 1).coerceAtLeast(0)
+        val maxIndex = count - 1
         if (state.currentIndex > maxIndex) {
             state.currentIndex = maxIndex
         }
+    }
+    LaunchedEffect(state) {
+        state.updateCurrentIndex()
     }
 
     val density = LocalDensity.current

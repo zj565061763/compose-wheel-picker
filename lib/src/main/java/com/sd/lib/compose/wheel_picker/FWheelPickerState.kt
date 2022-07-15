@@ -30,7 +30,7 @@ class FWheelPickerState(
 ) : ScrollableState {
     internal val lazyListState = LazyListState(firstVisibleItemIndex = initialIndex)
 
-    private var _currentIndex by mutableStateOf(initialIndex)
+    private var _currentIndex by mutableStateOf(-1)
 
     internal val mostStartItemInfo: LazyListItemInfo?
         get() {
@@ -51,13 +51,14 @@ class FWheelPickerState(
     val interactionSource: InteractionSource
         get() = lazyListState.interactionSource
 
-    @get:IntRange(from = 0)
+    @get:IntRange(from = -1)
     var currentIndex: Int
         get() = _currentIndex
         internal set(value) {
-            if (_currentIndex != value) {
-                _currentIndex = value
-                logMsg { "Current index changed:$value" }
+            val safeValue = value.coerceAtLeast(-1)
+            if (_currentIndex != safeValue) {
+                _currentIndex = safeValue
+                logMsg { "Current index changed:$safeValue" }
             }
         }
 
