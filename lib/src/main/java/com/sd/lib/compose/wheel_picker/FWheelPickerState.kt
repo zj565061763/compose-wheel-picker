@@ -37,7 +37,9 @@ class FWheelPickerState(
      * The item index closest to the viewport start.
      */
     private val _mostStartItemIndex: Int
-        get() = _mostStartItemInfo?.index ?: -1
+        get() = (_mostStartItemInfo?.index ?: -1).also {
+            _currentIndexSnapshot = it
+        }
 
     /**
      * The item closest to the viewport start.
@@ -104,7 +106,6 @@ class FWheelPickerState(
 
     internal fun synchronizeCurrentIndex() {
         updateCurrentIndexInternal(_mostStartItemIndex)
-        synchronizeCurrentIndexSnapshot()
     }
 
     private fun updateCurrentIndexInternal(index: Int) {
@@ -116,8 +117,7 @@ class FWheelPickerState(
     }
 
     internal fun synchronizeCurrentIndexSnapshot(): Int {
-        _currentIndexSnapshot = _mostStartItemIndex
-        return _currentIndexSnapshot
+        return _mostStartItemIndex
     }
 
     override val isScrollInProgress: Boolean
