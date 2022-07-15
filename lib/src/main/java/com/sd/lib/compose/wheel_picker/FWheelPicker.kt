@@ -117,7 +117,6 @@ private fun WheelPicker(
         with(density) { totalSize.toDp() }
     }
 
-    val maxVelocity = remember(density) { with(density) { maxFlingVelocity.toPx() } }
     val decay = remember(density) { splineBasedDecay<Float>(density) }
     val reverseLayoutUpdate by rememberUpdatedState(reverseLayout)
 
@@ -127,11 +126,14 @@ private fun WheelPicker(
                 val state = stateUpdate
                 val itemInfo = state.mostStartItemInfo
                 if (itemInfo != null) {
-                    var flingItemCount = available.consumeVelocity(isVertical)
+                    var flingItemCount = available
+                        .percentVelocity(
+                            isVertical = isVertical,
+                            percent = 0.4f,
+                        )
                         .flingItemCount(
                             isVertical = isVertical,
                             itemSize = itemSizePx,
-                            maxVelocity = maxVelocity,
                             decay = decay,
                         )
 
@@ -261,32 +263,28 @@ private fun ItemSizeBox(
     }
 }
 
-private fun Velocity.consumeVelocity(
+private fun Velocity.percentVelocity(
     isVertical: Boolean,
-    consumePercent: Float = 0.5f,
+    percent: Float,
 ): Velocity {
-    require(consumePercent > 0)
+    require(percent > 0 && percent <= 1f)
     return if (isVertical) {
-        copy(y = (y * consumePercent))
+        copy(y = (y * percent))
     } else {
-        copy(x = (x * consumePercent))
+        copy(x = (x * percent))
     }
 }
 
 private fun Velocity.flingItemCount(
     isVertical: Boolean,
     itemSize: Int,
-    maxVelocity: Float,
     decay: DecayAnimationSpec<Float>,
 ): Int {
-    require(maxVelocity > 0f)
     if (itemSize <= 0) return 0
-    val velocity = (if (isVertical) y else x).coerceIn(-maxVelocity, maxVelocity)
+    val velocity = if (isVertical) y else x
     val targetValue = decay.calculateTargetValue(0f, velocity)
     return (targetValue / itemSize).toInt()
 }
-
-private val maxFlingVelocity = 1500.dp
 
 interface FWheelPickerContentScope {
     val state: FWheelPickerState
