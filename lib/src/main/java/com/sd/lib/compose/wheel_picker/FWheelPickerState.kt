@@ -51,6 +51,9 @@ class FWheelPickerState(
     val interactionSource: InteractionSource
         get() = lazyListState.interactionSource
 
+    /**
+     * Index of picker when it is not scrolling.
+     */
     @get:IntRange(from = -1)
     var currentIndex: Int
         get() = _currentIndex
@@ -62,6 +65,9 @@ class FWheelPickerState(
             }
         }
 
+    /**
+     * Index of picker.
+     */
     @get:IntRange(from = 0)
     val currentIndexSnapshot: Int
         get() = mostStartItemInfo?.index ?: 0
