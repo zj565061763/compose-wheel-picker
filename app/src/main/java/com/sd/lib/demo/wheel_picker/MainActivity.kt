@@ -51,7 +51,7 @@ private fun MainView() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        SampleDefault()
+        SampleCustomUnfocusedCount()
     }
 }
 

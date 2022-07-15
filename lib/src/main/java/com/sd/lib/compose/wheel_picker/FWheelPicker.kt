@@ -11,9 +11,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -125,24 +123,18 @@ private fun WheelPicker(
 
     val nestedScrollConnection = remember(isVertical, density) {
         object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                if (source == NestedScrollSource.Drag) {
-                    return available.consumeScroll(isVertical)
-                }
-                return super.onPreScroll(available, source)
-            }
-
             override suspend fun onPreFling(available: Velocity): Velocity {
-                var flingItemCount = available.flingItemCount(
-                    isVertical = isVertical,
-                    itemSize = itemSizePx,
-                    maxVelocity = maxVelocity,
-                    decay = decay,
-                )
-
                 val state = stateUpdate
                 val itemInfo = state.mostStartItemInfo
                 if (itemInfo != null) {
+                    var flingItemCount = available.consumeVelocity(isVertical)
+                        .flingItemCount(
+                            isVertical = isVertical,
+                            itemSize = itemSizePx,
+                            maxVelocity = maxVelocity,
+                            decay = decay,
+                        )
+
                     if (flingItemCount.absoluteValue > 0) {
                         if (reverseLayoutUpdate) flingItemCount = -flingItemCount
                         val finalIndex = (itemInfo.index - flingItemCount)
@@ -269,10 +261,10 @@ private fun ItemSizeBox(
     }
 }
 
-private fun Offset.consumeScroll(
+private fun Velocity.consumeVelocity(
     isVertical: Boolean,
-    consumePercent: Float = 0.2f,
-): Offset {
+    consumePercent: Float = 0.5f,
+): Velocity {
     require(consumePercent > 0)
     return if (isVertical) {
         copy(y = (y * consumePercent))
