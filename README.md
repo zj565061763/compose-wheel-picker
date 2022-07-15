@@ -110,11 +110,15 @@ FVerticalWheelPicker(
     // ......
     // state
     state = state,
+    // Index change callback
+    onIndexChanged = {
+        Log.i(TAG, "onIndexChanged ${state.currentIndex}")
+    },
 ) {
     // ......
 }
 
-// Observe currentIndex.
+// Observe currentIndex, It is same with the onIndexChanged callback.
 LaunchedEffect(state) {
     snapshotFlow { state.currentIndex }
         .distinctUntilChanged()
