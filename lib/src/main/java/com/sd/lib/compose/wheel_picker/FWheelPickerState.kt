@@ -35,7 +35,7 @@ class FWheelPickerState(
     /**
      * The item closest to the viewport start.
      */
-    internal val mostStartItemInfo: LazyListItemInfo?
+    private val mostStartItemInfo: LazyListItemInfo?
         get() {
             val layoutInfo = lazyListState.layoutInfo
             val listInfo = layoutInfo.visibleItemsInfo

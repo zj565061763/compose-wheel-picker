@@ -118,15 +118,13 @@ private fun WheelPicker(
     }
 
     val decay = remember(density) { splineBasedDecay<Float>(density) }
-    val reverseLayoutUpdate by rememberUpdatedState(reverseLayout)
-
-    val nestedScrollConnection = remember(isVertical, density) {
+    val nestedScrollConnection = remember(density, isVertical, reverseLayout) {
         object : NestedScrollConnection {
             override suspend fun onPreFling(available: Velocity): Velocity {
                 val state = stateUpdate
-                val itemInfo = state.mostStartItemInfo
-                if (itemInfo != null) {
-                    var flingItemCount = available
+                val currentIndex = state.currentIndexSnapshot
+                return if (currentIndex >= 0) {
+                    val flingItemCount = available
                         .percentVelocity(
                             isVertical = isVertical,
                             percent = 0.4f,
@@ -135,18 +133,18 @@ private fun WheelPicker(
                             isVertical = isVertical,
                             itemSize = itemSizePx,
                             decay = decay,
+                            reverseLayout = reverseLayout,
                         )
 
                     if (flingItemCount.absoluteValue > 0) {
-                        if (reverseLayoutUpdate) flingItemCount = -flingItemCount
-                        val finalIndex = (itemInfo.index - flingItemCount)
-                        state.animateScrollToIndex(finalIndex)
+                        state.animateScrollToIndex(currentIndex - flingItemCount)
                     } else {
-                        state.animateScrollToIndex(itemInfo.index)
+                        state.animateScrollToIndex(currentIndex)
                     }
-                    return available
+                    available
+                } else {
+                    super.onPreFling(available)
                 }
-                return super.onPreFling(available)
             }
         }
     }
@@ -279,11 +277,13 @@ private fun Velocity.flingItemCount(
     isVertical: Boolean,
     itemSize: Int,
     decay: DecayAnimationSpec<Float>,
+    reverseLayout: Boolean,
 ): Int {
     if (itemSize <= 0) return 0
     val velocity = if (isVertical) y else x
     val targetValue = decay.calculateTargetValue(0f, velocity)
-    return (targetValue / itemSize).toInt()
+    val flingItemCount = (targetValue / itemSize).toInt()
+    return if (reverseLayout) -flingItemCount else flingItemCount
 }
 
 interface FWheelPickerContentScope {
