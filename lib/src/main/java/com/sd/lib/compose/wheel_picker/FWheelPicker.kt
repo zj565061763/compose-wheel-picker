@@ -11,7 +11,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -123,6 +125,13 @@ private fun WheelPicker(
 
     val nestedScrollConnection = remember(isVertical, density) {
         object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                if (source == NestedScrollSource.Drag) {
+                    return available.consumeScroll(isVertical)
+                }
+                return super.onPreScroll(available, source)
+            }
+
             override suspend fun onPreFling(available: Velocity): Velocity {
                 var flingItemCount = available.flingItemCount(
                     isVertical = isVertical,
@@ -260,6 +269,18 @@ private fun ItemSizeBox(
     }
 }
 
+private fun Offset.consumeScroll(
+    isVertical: Boolean,
+    consumePercent: Float = 0.2f,
+): Offset {
+    require(consumePercent > 0)
+    return if (isVertical) {
+        copy(y = (y * consumePercent))
+    } else {
+        copy(x = (x * consumePercent))
+    }
+}
+
 private fun Velocity.flingItemCount(
     isVertical: Boolean,
     itemSize: Int,
@@ -273,7 +294,7 @@ private fun Velocity.flingItemCount(
     return (targetValue / itemSize).toInt()
 }
 
-private val maxFlingVelocity = 1800.dp
+private val maxFlingVelocity = 1500.dp
 
 interface FWheelPickerContentScope {
     val state: FWheelPickerState
