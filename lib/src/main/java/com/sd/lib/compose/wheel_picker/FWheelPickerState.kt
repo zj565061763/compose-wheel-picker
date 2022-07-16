@@ -104,6 +104,7 @@ class FWheelPickerState(
         if (pending) {
             if (_currentIndex != index) {
                 _pendingIndex = index
+                logMsg { "pending index $index" }
             }
         }
     }
@@ -116,6 +117,7 @@ class FWheelPickerState(
     }
 
     internal suspend fun notifyCountChanged(count: Int) {
+        logMsg { "notifyCountChanged count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
         _count = count
         val maxIndex = count - 1
         if (_currentIndex > maxIndex) {
@@ -144,7 +146,7 @@ class FWheelPickerState(
             if (_pendingIndex == safeIndex) {
                 _pendingIndex = null
             }
-            logMsg { "Current index changed:$safeIndex" }
+            logMsg { "Current index changed $safeIndex" }
         }
     }
 
