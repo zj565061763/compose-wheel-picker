@@ -106,9 +106,11 @@ class FWheelPickerState(
             if (_currentIndex != safeIndex) {
                 _pendingIndex = safeIndex
                 logMsg { "pending index $safeIndex" }
-            } else {
-                _pendingIndex = null
             }
+        }
+
+        if (_currentIndex == safeIndex) {
+            _pendingIndex = null
         }
     }
 
