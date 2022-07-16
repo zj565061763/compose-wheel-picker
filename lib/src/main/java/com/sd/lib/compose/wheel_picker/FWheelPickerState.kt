@@ -102,6 +102,9 @@ class FWheelPickerState(
     val currentIndexSnapshot: Int
         get() = _currentIndexSnapshot
 
+    val hasPendingScroll: Boolean
+        get() = _pendingIndex != null
+
     suspend fun animateScrollToIndex(
         @IntRange(from = 0) index: Int,
     ) {
