@@ -153,9 +153,10 @@ class FWheelPickerState(
     internal suspend fun notifyCountChanged(count: Int) {
         logMsg { "notifyCountChanged count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
         _count = count
+
         val maxIndex = count - 1
         if (_currentIndex > maxIndex) {
-            updateCurrentIndexInternal(maxIndex)
+            setCurrentIndexInternal(maxIndex)
         } else {
             _pendingIndex?.let { pendingIndex ->
                 if (count > pendingIndex) {
@@ -169,10 +170,10 @@ class FWheelPickerState(
     }
 
     private fun synchronizeCurrentIndex() {
-        updateCurrentIndexInternal(_mostStartItemIndex)
+        setCurrentIndexInternal(_mostStartItemIndex)
     }
 
-    private fun updateCurrentIndexInternal(index: Int) {
+    private fun setCurrentIndexInternal(index: Int) {
         val safeIndex = index.coerceAtLeast(-1)
         if (_currentIndex != safeIndex) {
             logMsg { "Current index changed $safeIndex" }
