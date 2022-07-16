@@ -34,6 +34,14 @@ class FWheelPickerState(
     private var _currentIndexSnapshot by mutableStateOf(-1)
 
     /**
+     * Item count
+     */
+    private var _count = 0
+        set(value) {
+            field = value.coerceAtLeast(0)
+        }
+
+    /**
      * The item index closest to the viewport start.
      */
     private val _mostStartItemIndex: Int
@@ -46,6 +54,7 @@ class FWheelPickerState(
      */
     private val _mostStartItemInfo: LazyListItemInfo?
         get() {
+            if (_count <= 0) return null
             val layoutInfo = lazyListState.layoutInfo
             val listInfo = layoutInfo.visibleItemsInfo
             if (listInfo.isEmpty()) return null
@@ -98,13 +107,16 @@ class FWheelPickerState(
     }
 
     internal fun notifyCountChanged(count: Int) {
+        _count = count
         val maxIndex = count - 1
         if (_currentIndex > maxIndex) {
             updateCurrentIndexInternal(maxIndex)
+        } else if (_currentIndex < 0) {
+            synchronizeCurrentIndex()
         }
     }
 
-    internal fun synchronizeCurrentIndex() {
+    private fun synchronizeCurrentIndex() {
         updateCurrentIndexInternal(_mostStartItemIndex)
     }
 

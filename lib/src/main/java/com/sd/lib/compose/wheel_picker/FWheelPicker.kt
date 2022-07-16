@@ -113,11 +113,6 @@ private fun WheelPicker(
         state.notifyCountChanged(count)
     }
 
-    LaunchedEffect(state) {
-        // We synchronize index here because state has initial index.
-        state.synchronizeCurrentIndex()
-    }
-
     val density = LocalDensity.current
 
     val itemSizePx = remember(density, itemSize) { with(density) { itemSize.roundToPx() } }
