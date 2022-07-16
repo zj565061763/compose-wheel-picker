@@ -33,6 +33,8 @@ class FWheelPickerState(
     private var _currentIndex by mutableStateOf(-1)
     private var _currentIndexSnapshot by mutableStateOf(-1)
 
+    private var _pendingIndex: Int? = null
+
     /**
      * Item count
      */
@@ -94,9 +96,16 @@ class FWheelPickerState(
 
     suspend fun scrollToIndex(
         @IntRange(from = 0) index: Int,
+        pending: Boolean = true,
     ) {
         lazyListState.scrollToItem(index.coerceAtLeast(0))
         synchronizeCurrentIndex()
+
+        if (pending) {
+            if (_currentIndex != index) {
+                _pendingIndex = index
+            }
+        }
     }
 
     suspend fun animateScrollToIndex(
@@ -106,13 +115,20 @@ class FWheelPickerState(
         synchronizeCurrentIndex()
     }
 
-    internal fun notifyCountChanged(count: Int) {
+    internal suspend fun notifyCountChanged(count: Int) {
         _count = count
         val maxIndex = count - 1
         if (_currentIndex > maxIndex) {
             updateCurrentIndexInternal(maxIndex)
-        } else if (_currentIndex < 0) {
-            synchronizeCurrentIndex()
+        } else {
+            _pendingIndex?.let { pendingIndex ->
+                if (count > pendingIndex) {
+                    scrollToIndex(pendingIndex)
+                }
+            }
+            if (_currentIndex < 0) {
+                synchronizeCurrentIndex()
+            }
         }
     }
 
@@ -125,6 +141,9 @@ class FWheelPickerState(
         if (_currentIndex != safeIndex) {
             _currentIndex = safeIndex
             _currentIndexSnapshot = safeIndex
+            if (_pendingIndex == safeIndex) {
+                _pendingIndex = null
+            }
             logMsg { "Current index changed:$safeIndex" }
         }
     }
