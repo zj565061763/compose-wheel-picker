@@ -121,17 +121,12 @@ class FWheelPickerState(
         synchronizeCurrentIndex()
 
         if (pending) {
-            if (_currentIndex != safeIndex) {
-                awaitScroll(safeIndex)
-            }
-        }
-
-        if (_currentIndex == safeIndex) {
-            _pendingIndex = null
+            awaitScroll(safeIndex)
         }
     }
 
     private suspend fun awaitScroll(index: Int) {
+        if (_currentIndex == index) return
         logMsg { "awaitScroll index $index start" }
 
         // Resume last continuation before suspend.
@@ -144,7 +139,7 @@ class FWheelPickerState(
 
     private fun resumeAwaitScroll() {
         _pendingIndexContinuation?.let {
-            logMsg { "resumeAwaitScroll" }
+            logMsg { "resumeAwaitScroll pendingIndex:$_pendingIndex" }
             it.resume(Unit)
             _pendingIndexContinuation = null
         }
