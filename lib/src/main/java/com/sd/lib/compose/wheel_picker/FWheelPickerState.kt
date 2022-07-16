@@ -93,7 +93,7 @@ class FWheelPickerState(
         get() = _currentIndex
 
     /**
-     * Index of picker when it is idle or scrolling but not fling.
+     * Index of picker when it is idle or drag but not fling.
      *
      * Note that this property is observable and if you use it in the composable function
      * it will be recomposed on every change.
