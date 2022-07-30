@@ -2,8 +2,8 @@ package com.sd.lib.compose.wheel_picker
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 fun FWheelPickerFocusVertical(
     modifier: Modifier = Modifier,
     dividerSize: Dp = 1.dp,
-    dividerColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f),
+    dividerColor: Color = DefaultDividerColor,
 ) {
     Box(
         modifier = modifier.fillMaxSize()
@@ -51,7 +51,7 @@ fun FWheelPickerFocusVertical(
 fun FWheelPickerFocusHorizontal(
     modifier: Modifier = Modifier,
     dividerSize: Dp = 1.dp,
-    dividerColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f),
+    dividerColor: Color = DefaultDividerColor,
 ) {
     Box(
         modifier = modifier.fillMaxSize()
@@ -74,18 +74,32 @@ fun FWheelPickerFocusHorizontal(
 }
 
 /**
+ * Default divider color.
+ */
+private val DefaultDividerColor: Color
+    @Composable
+    get() {
+        return (if (isSystemInDarkTheme()) {
+            Color.White
+        } else {
+            Color.Black
+        }).copy(alpha = 0.2f)
+    }
+
+/**
  * Default content wrapper.
  */
-val DefaultWheelPickerContentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit = { index, state ->
-    val isFocus = index == state.currentIndexSnapshot
-    val alpha = if (isFocus) 1.0f else 0.3f
-    val scale = if (isFocus) 1.0f else 0.8f
-    val animateScale by animateFloatAsState(scale)
-    Box(
-        modifier = Modifier
-            .alpha(alpha)
-            .scale(animateScale),
-    ) {
-        content(index)
+val DefaultWheelPickerContentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit =
+    { index, state ->
+        val isFocus = index == state.currentIndexSnapshot
+        val alpha = if (isFocus) 1.0f else 0.3f
+        val scale = if (isFocus) 1.0f else 0.8f
+        val animateScale by animateFloatAsState(scale)
+        Box(
+            modifier = Modifier
+                .alpha(alpha)
+                .scale(animateScale),
+        ) {
+            content(index)
+        }
     }
-}
