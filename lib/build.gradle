@@ -6,7 +6,7 @@ plugins {
 
 def libGroupId = "com.sd.lib.android"
 def libArtifactId = "compose-wheel-picker"
-def libVersionName = "1.0.0-alpha09"
+def libVersionName = "1.0.0-alpha10"
 
 android {
     compileSdk 32
