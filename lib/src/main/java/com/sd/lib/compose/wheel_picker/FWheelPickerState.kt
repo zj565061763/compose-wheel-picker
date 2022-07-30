@@ -14,9 +14,9 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 import kotlin.math.absoluteValue
 
 @Composable
@@ -133,7 +133,15 @@ class FWheelPickerState(
         resumeAwaitScroll()
 
         _pendingIndex = index
-        suspendCoroutine { _pendingIndexContinuation = it }
+        suspendCancellableCoroutine {
+            _pendingIndexContinuation = it
+            it.invokeOnCancellation {
+                logMsg { "awaitScroll index $index canceled" }
+                _pendingIndexContinuation = null
+                _pendingIndex = null
+
+            }
+        }
         logMsg { "awaitScroll index $index finish" }
     }
 
@@ -187,7 +195,10 @@ class FWheelPickerState(
     override val isScrollInProgress: Boolean
         get() = lazyListState.isScrollInProgress
 
-    override suspend fun scroll(scrollPriority: MutatePriority, block: suspend ScrollScope.() -> Unit) {
+    override suspend fun scroll(
+        scrollPriority: MutatePriority,
+        block: suspend ScrollScope.() -> Unit,
+    ) {
         lazyListState.scroll(scrollPriority, block)
     }
 
