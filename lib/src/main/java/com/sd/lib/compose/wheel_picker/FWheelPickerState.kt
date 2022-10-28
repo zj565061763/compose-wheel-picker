@@ -43,44 +43,10 @@ class FWheelPickerState(
         }
     private var _pendingIndexContinuation: Continuation<Unit>? = null
 
-    /**
-     * Item count
-     */
     private var _count = 0
         set(value) {
             field = value.coerceAtLeast(0)
         }
-
-    /**
-     * The item index closest to the viewport start.
-     */
-    private val _mostStartItemIndex: Int
-        get() = (_mostStartItemInfo?.index ?: -1).also {
-            _currentIndexSnapshot = it
-        }
-
-    /**
-     * The item closest to the viewport start.
-     */
-    private val _mostStartItemInfo: LazyListItemInfo?
-        get() {
-            if (_count <= 0) return null
-            val layoutInfo = lazyListState.layoutInfo
-            val listInfo = layoutInfo.visibleItemsInfo
-            if (listInfo.isEmpty()) return null
-            if (listInfo.size == 1) return listInfo.first()
-
-            val firstItem = listInfo.first()
-            val firstOffsetDelta = (firstItem.offset - layoutInfo.viewportStartOffset).absoluteValue
-            return if (firstOffsetDelta < firstItem.size / 2) {
-                firstItem
-            } else {
-                listInfo[1]
-            }
-        }
-
-    val interactionSource: InteractionSource
-        get() = lazyListState.interactionSource
 
     /**
      * Index of picker when it is idle.
@@ -101,6 +67,9 @@ class FWheelPickerState(
     @get:IntRange(from = -1)
     val currentIndexSnapshot: Int
         get() = _currentIndexSnapshot
+
+    val interactionSource: InteractionSource
+        get() = lazyListState.interactionSource
 
     val hasPendingScroll: Boolean
         get() = _pendingIndex != null
@@ -173,7 +142,8 @@ class FWheelPickerState(
     }
 
     private fun synchronizeCurrentIndex() {
-        setCurrentIndexInternal(_mostStartItemIndex)
+        val index = synchronizeCurrentIndexSnapshot()
+        setCurrentIndexInternal(index)
     }
 
     private fun setCurrentIndexInternal(index: Int) {
@@ -189,7 +159,30 @@ class FWheelPickerState(
     }
 
     internal fun synchronizeCurrentIndexSnapshot(): Int {
-        return _mostStartItemIndex
+        return (mostStartItemInfo()?.index ?: -1).also {
+            _currentIndexSnapshot = it
+        }
+    }
+
+    /**
+     * The item closest to the viewport start.
+     */
+    private fun mostStartItemInfo(): LazyListItemInfo? {
+        if (_count <= 0) return null
+
+        val layoutInfo = lazyListState.layoutInfo
+        val listInfo = layoutInfo.visibleItemsInfo
+
+        if (listInfo.isEmpty()) return null
+        if (listInfo.size == 1) return listInfo.first()
+
+        val firstItem = listInfo.first()
+        val firstOffsetDelta = (firstItem.offset - layoutInfo.viewportStartOffset).absoluteValue
+        return if (firstOffsetDelta < firstItem.size / 2) {
+            firstItem
+        } else {
+            listInfo[1]
+        }
     }
 
     override val isScrollInProgress: Boolean
