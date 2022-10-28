@@ -26,8 +26,6 @@ import com.sd.lib.demo.wheel_picker.ui.theme.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 
-private const val TAG = "MainActivity"
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,9 +109,11 @@ private fun SampleCustomFocus() {
         count = 50,
         focus = {
             // Custom focus.
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .border(width = 1.dp, color = Color.Gray))
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(width = 1.dp, color = Color.Gray)
+            )
         },
     ) {
         Text(it.toString())
@@ -148,7 +148,7 @@ private fun SampleObserveIndex() {
         count = 50,
         state = state,
         onIndexChanged = {
-            Log.i(TAG, "onIndexChanged ${state.currentIndex}")
+            logMsg { "onIndexChanged ${state.currentIndex}" }
         },
     ) {
         Text(it.toString())
@@ -159,7 +159,7 @@ private fun SampleObserveIndex() {
         snapshotFlow { state.currentIndex }
             .distinctUntilChanged()
             .collect {
-                Log.i(TAG, "currentIndex ${state.currentIndex}")
+                logMsg { "currentIndex ${state.currentIndex}" }
             }
     }
 
@@ -168,7 +168,7 @@ private fun SampleObserveIndex() {
         snapshotFlow { state.currentIndexSnapshot }
             .distinctUntilChanged()
             .collect {
-                Log.i(TAG, "currentIndexSnapshot ${state.currentIndexSnapshot}")
+                logMsg { "currentIndexSnapshot ${state.currentIndexSnapshot}" }
             }
     }
 }
@@ -213,4 +213,8 @@ private fun SampleReverseLayout() {
 @Composable
 fun PreviewMainView() {
     MainView()
+}
+
+fun logMsg(block: () -> String) {
+    Log.i("wheel-picker-demo", block())
 }
