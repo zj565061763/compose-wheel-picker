@@ -3,7 +3,7 @@ package com.sd.lib.compose.wheel_picker
 import android.util.Log
 import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.animation.core.calculateTargetValue
-import androidx.compose.animation.splineBasedDecay
+import androidx.compose.animation.core.exponentialDecay
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -39,12 +39,12 @@ fun FVerticalWheelPicker(
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
-        modifier = modifier,
+        isVertical = true,
         count = count,
         state = state,
+        modifier = modifier,
         key = key,
         itemSize = itemHeight,
-        isVertical = true,
         unfocusedCount = unfocusedCount,
         userScrollEnabled = userScrollEnabled,
         reverseLayout = reverseLayout,
@@ -73,12 +73,12 @@ fun FHorizontalWheelPicker(
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
-        modifier = modifier,
+        isVertical = false,
         count = count,
         state = state,
+        modifier = modifier,
         key = key,
         itemSize = itemWidth,
-        isVertical = false,
         unfocusedCount = unfocusedCount,
         userScrollEnabled = userScrollEnabled,
         reverseLayout = reverseLayout,
@@ -91,12 +91,12 @@ fun FHorizontalWheelPicker(
 
 @Composable
 private fun WheelPicker(
+    isVertical: Boolean,
     count: Int,
     state: FWheelPickerState,
     modifier: Modifier,
     key: ((index: Int) -> Any)?,
     itemSize: Dp,
-    isVertical: Boolean,
     unfocusedCount: Int,
     userScrollEnabled: Boolean,
     reverseLayout: Boolean,
@@ -108,11 +108,11 @@ private fun WheelPicker(
     require(count >= 0) { "require count >= 0" }
     require(unfocusedCount >= 1) { "require unfocusedCount >= 1" }
 
-    val stateUpdated by rememberUpdatedState(state)
+    val densityUpdated by rememberUpdatedState(LocalDensity.current)
     val itemSizeUpdated by rememberUpdatedState(itemSize)
     val unfocusedCountUpdated by rememberUpdatedState(unfocusedCount)
+    val reverseLayoutUpdated by rememberUpdatedState(reverseLayout)
 
-    val density = LocalDensity.current
     val totalSize by remember {
         derivedStateOf { itemSizeUpdated * (unfocusedCountUpdated * 2 + 1) }
     }
@@ -121,29 +121,22 @@ private fun WheelPicker(
         state.notifyCountChanged(count)
     }
 
-    val decay = remember(density) { splineBasedDecay<Float>(density) }
-    val nestedScrollConnection = remember(density, isVertical, reverseLayout) {
+    val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                stateUpdated.synchronizeCurrentIndexSnapshot()
+                state.synchronizeCurrentIndexSnapshot()
                 return super.onPostScroll(consumed, available, source)
             }
 
             override suspend fun onPreFling(available: Velocity): Velocity {
-                val state = stateUpdated
                 val currentIndex = state.synchronizeCurrentIndexSnapshot()
                 return if (currentIndex >= 0) {
-                    val flingItemCount = available
-                        .percentVelocity(
-                            isVertical = isVertical,
-                            percent = 0.4f,
-                        )
-                        .flingItemCount(
-                            isVertical = isVertical,
-                            itemSize = with(density) { itemSizeUpdated.roundToPx() },
-                            decay = decay,
-                            reverseLayout = reverseLayout,
-                        )
+                    val flingItemCount = available.flingItemCount(
+                        isVertical = isVertical,
+                        itemSize = with(densityUpdated) { itemSizeUpdated.roundToPx() },
+                        decay = exponentialDecay(2f),
+                        reverseLayout = reverseLayoutUpdated,
+                    )
 
                     if (flingItemCount.absoluteValue > 0) {
                         state.animateScrollToIndex(currentIndex - flingItemCount)
@@ -197,7 +190,7 @@ private fun WheelPicker(
     ) {
 
         val lazyListScope: LazyListScope.() -> Unit = {
-            repeat(unfocusedCount) {
+            repeat(unfocusedCountUpdated) {
                 item {
                     ItemSizeBox(
                         isVertical = isVertical,
@@ -214,11 +207,11 @@ private fun WheelPicker(
                     isVertical = isVertical,
                     itemSize = itemSize,
                 ) {
-                    contentWrapperScope.contentWrapper(index, stateUpdated)
+                    contentWrapperScope.contentWrapper(index, state)
                 }
             }
 
-            repeat(unfocusedCount) {
+            repeat(unfocusedCountUpdated) {
                 item {
                     ItemSizeBox(
                         isVertical = isVertical,
@@ -232,7 +225,7 @@ private fun WheelPicker(
             LazyColumn(
                 state = state.lazyListState,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                reverseLayout = reverseLayout,
+                reverseLayout = reverseLayoutUpdated,
                 userScrollEnabled = userScrollEnabled,
                 modifier = Modifier.matchParentSize(),
                 content = lazyListScope,
@@ -241,7 +234,7 @@ private fun WheelPicker(
             LazyRow(
                 state = state.lazyListState,
                 verticalAlignment = Alignment.CenterVertically,
-                reverseLayout = reverseLayout,
+                reverseLayout = reverseLayoutUpdated,
                 userScrollEnabled = userScrollEnabled,
                 modifier = Modifier.matchParentSize(),
                 content = lazyListScope,
@@ -277,18 +270,6 @@ private fun ItemSizeBox(
         contentAlignment = Alignment.Center,
     ) {
         content()
-    }
-}
-
-private fun Velocity.percentVelocity(
-    isVertical: Boolean,
-    percent: Float,
-): Velocity {
-    require(percent > 0 && percent <= 1f)
-    return if (isVertical) {
-        copy(y = (y * percent))
-    } else {
-        copy(x = (x * percent))
     }
 }
 
