@@ -109,16 +109,16 @@ private fun WheelPicker(
     require(unfocusedCount >= 1) { "require unfocusedCount >= 1" }
 
     val stateUpdated by rememberUpdatedState(state)
-    LaunchedEffect(state, count) {
-        state.notifyCountChanged(count)
-    }
+    val itemSizeUpdated by rememberUpdatedState(itemSize)
+    val unfocusedCountUpdated by rememberUpdatedState(unfocusedCount)
 
     val density = LocalDensity.current
+    val totalSize by remember {
+        derivedStateOf { itemSizeUpdated * (unfocusedCountUpdated * 2 + 1) }
+    }
 
-    val itemSizePx = remember(density, itemSize) { with(density) { itemSize.roundToPx() } }
-    val totalSizeDp by derivedStateOf {
-        val totalSize = (unfocusedCount * 2 + 1) * itemSizePx
-        with(density) { totalSize.toDp() }
+    LaunchedEffect(state, count) {
+        state.notifyCountChanged(count)
     }
 
     val decay = remember(density) { splineBasedDecay<Float>(density) }
@@ -140,7 +140,7 @@ private fun WheelPicker(
                         )
                         .flingItemCount(
                             isVertical = isVertical,
-                            itemSize = itemSizePx,
+                            itemSize = with(density) { itemSizeUpdated.roundToPx() },
                             decay = decay,
                             reverseLayout = reverseLayout,
                         )
@@ -183,11 +183,11 @@ private fun WheelPicker(
         modifier = modifier
             .nestedScroll(nestedScrollConnection)
             .run {
-                if (totalSizeDp > 0.dp) {
+                if (totalSize > 0.dp) {
                     if (isVertical) {
-                        height(totalSizeDp).widthIn(40.dp)
+                        height(totalSize).widthIn(40.dp)
                     } else {
-                        width(totalSizeDp).heightIn(40.dp)
+                        width(totalSize).heightIn(40.dp)
                     }
                 } else {
                     this
