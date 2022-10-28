@@ -108,7 +108,7 @@ private fun WheelPicker(
     require(count >= 0) { "require count >= 0" }
     require(unfocusedCount >= 1) { "require unfocusedCount >= 1" }
 
-    val stateUpdate by rememberUpdatedState(state)
+    val stateUpdated by rememberUpdatedState(state)
     LaunchedEffect(state, count) {
         state.notifyCountChanged(count)
     }
@@ -125,12 +125,12 @@ private fun WheelPicker(
     val nestedScrollConnection = remember(density, isVertical, reverseLayout) {
         object : NestedScrollConnection {
             override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                stateUpdate.synchronizeCurrentIndexSnapshot()
+                stateUpdated.synchronizeCurrentIndexSnapshot()
                 return super.onPostScroll(consumed, available, source)
             }
 
             override suspend fun onPreFling(available: Velocity): Velocity {
-                val state = stateUpdate
+                val state = stateUpdated
                 val currentIndex = state.synchronizeCurrentIndexSnapshot()
                 return if (currentIndex >= 0) {
                     val flingItemCount = available
@@ -214,7 +214,7 @@ private fun WheelPicker(
                     isVertical = isVertical,
                     itemSize = itemSize,
                 ) {
-                    contentWrapperScope.contentWrapper(index, stateUpdate)
+                    contentWrapperScope.contentWrapper(index, stateUpdated)
                 }
             }
 
