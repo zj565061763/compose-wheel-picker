@@ -105,8 +105,8 @@ private fun WheelPicker(
     contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
-    require(count >= 0) { "count must be >= 0" }
-    require(unfocusedCount >= 1) { "unfocusedCount must be >= 1" }
+    require(count >= 0) { "require count >= 0" }
+    require(unfocusedCount >= 1) { "require unfocusedCount >= 1" }
 
     val stateUpdate by rememberUpdatedState(state)
     LaunchedEffect(state, count) {
