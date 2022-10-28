@@ -23,9 +23,9 @@ import kotlin.math.absoluteValue
 
 @Composable
 fun FVerticalWheelPicker(
-    modifier: Modifier = Modifier,
     count: Int,
     state: FWheelPickerState = rememberFWheelPickerState(),
+    modifier: Modifier = Modifier,
     key: ((index: Int) -> Any)? = null,
     itemHeight: Dp = 35.dp,
     unfocusedCount: Int = 1,
@@ -57,9 +57,9 @@ fun FVerticalWheelPicker(
 
 @Composable
 fun FHorizontalWheelPicker(
-    modifier: Modifier = Modifier,
     count: Int,
     state: FWheelPickerState = rememberFWheelPickerState(),
+    modifier: Modifier = Modifier,
     key: ((index: Int) -> Any)? = null,
     itemWidth: Dp = 35.dp,
     unfocusedCount: Int = 1,
@@ -91,9 +91,9 @@ fun FHorizontalWheelPicker(
 
 @Composable
 private fun WheelPicker(
-    modifier: Modifier,
     count: Int,
     state: FWheelPickerState,
+    modifier: Modifier,
     key: ((index: Int) -> Any)?,
     itemSize: Dp,
     isVertical: Boolean,
