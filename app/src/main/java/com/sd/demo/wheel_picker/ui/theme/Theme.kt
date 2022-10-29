@@ -1,4 +1,4 @@
-package com.sd.lib.demo.wheel_picker.ui.theme
+package com.sd.demo.wheel_picker.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

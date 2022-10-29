@@ -1,4 +1,4 @@
-package com.sd.lib.demo.wheel_picker
+package com.sd.demo.wheel_picker
 
 import android.os.Bundle
 import android.util.Log
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.sd.lib.compose.wheel_picker.FVerticalWheelPicker
 import com.sd.lib.compose.wheel_picker.FWheelPickerFocusVertical
 import com.sd.lib.compose.wheel_picker.rememberFWheelPickerState
-import com.sd.lib.demo.wheel_picker.ui.theme.AppTheme
+import com.sd.demo.wheel_picker.ui.theme.AppTheme
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
