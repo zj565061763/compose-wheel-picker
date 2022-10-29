@@ -4,11 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    namespace = "com.sd.lib.demo.compose.wheel_picker"
+    compileSdk 33
     defaultConfig {
-        applicationId "com.sd.lib.demo.compose.wheel_picker"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
+        applicationId "com.sd.lib.demo.compose.wheel_picker"
         versionCode 1
         versionName "1.0"
 
