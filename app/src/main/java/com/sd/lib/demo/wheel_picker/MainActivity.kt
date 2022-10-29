@@ -210,5 +210,5 @@ fun PreviewMainView() {
 }
 
 fun logMsg(block: () -> String) {
-    Log.i("wheel-picker-demo", block())
+    Log.i("FWheelPicker-demo", block())
 }
