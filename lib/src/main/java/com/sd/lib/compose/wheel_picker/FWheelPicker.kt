@@ -31,6 +31,7 @@ fun FVerticalWheelPicker(
     unfocusedCount: Int = 1,
     userScrollEnabled: Boolean = true,
     reverseLayout: Boolean = false,
+    debug: Boolean = false,
     focus: @Composable () -> Unit = { FWheelPickerFocusVertical() },
     contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit = DefaultWheelPickerContentWrapper,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
@@ -45,6 +46,7 @@ fun FVerticalWheelPicker(
         unfocusedCount = unfocusedCount,
         userScrollEnabled = userScrollEnabled,
         reverseLayout = reverseLayout,
+        debug = debug,
         focus = focus,
         contentWrapper = contentWrapper,
         content = content,
@@ -61,6 +63,7 @@ fun FHorizontalWheelPicker(
     unfocusedCount: Int = 1,
     userScrollEnabled: Boolean = true,
     reverseLayout: Boolean = false,
+    debug: Boolean = false,
     focus: @Composable () -> Unit = { FWheelPickerFocusHorizontal() },
     contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit = DefaultWheelPickerContentWrapper,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
@@ -75,6 +78,7 @@ fun FHorizontalWheelPicker(
         unfocusedCount = unfocusedCount,
         userScrollEnabled = userScrollEnabled,
         reverseLayout = reverseLayout,
+        debug = debug,
         focus = focus,
         contentWrapper = contentWrapper,
         content = content,
@@ -92,12 +96,15 @@ private fun WheelPicker(
     unfocusedCount: Int,
     userScrollEnabled: Boolean,
     reverseLayout: Boolean,
+    debug: Boolean = false,
     focus: @Composable () -> Unit,
     contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     require(count >= 0) { "require count >= 0" }
     require(unfocusedCount >= 1) { "require unfocusedCount >= 1" }
+
+    state.debug = debug
 
     val densityUpdated by rememberUpdatedState(LocalDensity.current)
     val itemSizeUpdated by rememberUpdatedState(itemSize)

@@ -31,6 +31,8 @@ fun rememberFWheelPickerState(
 class FWheelPickerState(
     @IntRange(from = 0) initialIndex: Int = 0,
 ) : ScrollableState {
+
+    internal var debug = false
     internal val lazyListState = LazyListState()
 
     private var _currentIndex by mutableStateOf(-1)
@@ -97,7 +99,10 @@ class FWheelPickerState(
 
     private suspend fun awaitScroll(index: Int) {
         if (_currentIndex == index) return
-        logMsg { "awaitScroll index $index start" }
+
+        if (debug) {
+            logMsg { "awaitScroll index $index start" }
+        }
 
         // Resume last continuation before suspend.
         resumeAwaitScroll()
@@ -106,25 +111,35 @@ class FWheelPickerState(
         suspendCancellableCoroutine {
             _pendingIndexContinuation = it
             it.invokeOnCancellation {
-                logMsg { "awaitScroll index $index canceled" }
+                if (debug) {
+                    logMsg { "awaitScroll index $index canceled" }
+                }
                 _pendingIndexContinuation = null
                 _pendingIndex = null
 
             }
         }
-        logMsg { "awaitScroll index $index finish" }
+
+        if (debug) {
+            logMsg { "awaitScroll index $index finish" }
+        }
     }
 
     private fun resumeAwaitScroll() {
         _pendingIndexContinuation?.let {
-            logMsg { "resumeAwaitScroll pendingIndex:$_pendingIndex" }
+            if (debug) {
+                logMsg { "resumeAwaitScroll pendingIndex:$_pendingIndex" }
+            }
             it.resume(Unit)
             _pendingIndexContinuation = null
         }
     }
 
     internal suspend fun notifyCountChanged(count: Int) {
-        logMsg { "notifyCountChanged count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
+        if (debug) {
+            logMsg { "notifyCountChanged count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
+        }
+
         _count = count
 
         val maxIndex = count - 1
@@ -150,7 +165,9 @@ class FWheelPickerState(
     private fun setCurrentIndexInternal(index: Int) {
         val safeIndex = index.coerceAtLeast(-1)
         if (_currentIndex != safeIndex) {
-            logMsg { "Current index changed $safeIndex" }
+            if (debug) {
+                logMsg { "Current index changed $safeIndex" }
+            }
             _currentIndex = safeIndex
             _currentIndexSnapshot = safeIndex
             if (_pendingIndex == safeIndex) {
