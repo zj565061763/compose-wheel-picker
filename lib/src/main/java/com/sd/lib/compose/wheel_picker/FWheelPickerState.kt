@@ -79,6 +79,10 @@ class FWheelPickerState(
     suspend fun animateScrollToIndex(
         @IntRange(from = 0) index: Int,
     ) {
+        if (debug) {
+            logMsg { "animateScrollToIndex index:$index" }
+        }
+
         val safeIndex = index.coerceAtLeast(0)
         lazyListState.animateScrollToItem(safeIndex)
         synchronizeCurrentIndex()
@@ -88,6 +92,10 @@ class FWheelPickerState(
         @IntRange(from = 0) index: Int,
         pending: Boolean = true,
     ) {
+        if (debug) {
+            logMsg { "scrollToIndex index:$index pending:$pending" }
+        }
+
         val safeIndex = index.coerceAtLeast(0)
         lazyListState.scrollToItem(safeIndex)
         synchronizeCurrentIndex()
@@ -158,6 +166,9 @@ class FWheelPickerState(
     }
 
     private fun synchronizeCurrentIndex() {
+        if (debug) {
+            logMsg { "synchronizeCurrentIndex" }
+        }
         val index = synchronizeCurrentIndexSnapshot()
         setCurrentIndexInternal(index)
     }
