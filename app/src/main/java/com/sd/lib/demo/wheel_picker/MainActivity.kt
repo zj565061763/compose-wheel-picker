@@ -24,7 +24,6 @@ import com.sd.lib.compose.wheel_picker.FWheelPickerFocusVertical
 import com.sd.lib.compose.wheel_picker.rememberFWheelPickerState
 import com.sd.lib.demo.wheel_picker.ui.theme.AppTheme
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.distinctUntilChanged
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,7 +153,6 @@ private fun SampleObserveIndex() {
     // Observe currentIndex.
     LaunchedEffect(state) {
         snapshotFlow { state.currentIndex }
-            .distinctUntilChanged()
             .collect {
                 logMsg { "currentIndex ${state.currentIndex}" }
             }
@@ -163,7 +161,6 @@ private fun SampleObserveIndex() {
     // Observe currentIndexSnapshot.
     LaunchedEffect(state) {
         snapshotFlow { state.currentIndexSnapshot }
-            .distinctUntilChanged()
             .collect {
                 logMsg { "currentIndexSnapshot ${state.currentIndexSnapshot}" }
             }

@@ -120,7 +120,6 @@ FVerticalWheelPicker(
 // Observe currentIndex.
 LaunchedEffect(state) {
     snapshotFlow { state.currentIndex }
-        .distinctUntilChanged()
         .collect {
             Log.i(TAG, "currentIndex ${state.currentIndex}")
         }
@@ -129,7 +128,6 @@ LaunchedEffect(state) {
 // Observe currentIndexSnapshot.
 LaunchedEffect(state) {
     snapshotFlow { state.currentIndexSnapshot }
-        .distinctUntilChanged()
         .collect {
             Log.i(TAG, "currentIndexSnapshot ${state.currentIndexSnapshot}")
         }
