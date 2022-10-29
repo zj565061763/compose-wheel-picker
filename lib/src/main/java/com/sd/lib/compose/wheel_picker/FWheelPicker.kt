@@ -31,9 +31,7 @@ fun FVerticalWheelPicker(
     unfocusedCount: Int = 1,
     userScrollEnabled: Boolean = true,
     reverseLayout: Boolean = false,
-    focus: @Composable () -> Unit = {
-        FWheelPickerFocusVertical()
-    },
+    focus: @Composable () -> Unit = { FWheelPickerFocusVertical() },
     contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit = DefaultWheelPickerContentWrapper,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
@@ -63,9 +61,7 @@ fun FHorizontalWheelPicker(
     unfocusedCount: Int = 1,
     userScrollEnabled: Boolean = true,
     reverseLayout: Boolean = false,
-    focus: @Composable () -> Unit = {
-        FWheelPickerFocusHorizontal()
-    },
+    focus: @Composable () -> Unit = { FWheelPickerFocusHorizontal() },
     contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit = DefaultWheelPickerContentWrapper,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
