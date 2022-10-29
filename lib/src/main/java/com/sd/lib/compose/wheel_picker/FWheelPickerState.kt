@@ -31,12 +31,12 @@ fun rememberFWheelPickerState(
 class FWheelPickerState(
     @IntRange(from = 0) initialIndex: Int = 0,
 ) : ScrollableState {
-    internal val lazyListState = LazyListState(firstVisibleItemIndex = initialIndex)
+    internal val lazyListState = LazyListState()
 
     private var _currentIndex by mutableStateOf(-1)
     private var _currentIndexSnapshot by mutableStateOf(-1)
 
-    private var _pendingIndex: Int? = null
+    private var _pendingIndex: Int? = initialIndex
         set(value) {
             field = value
             if (value == null) resumeAwaitScroll()
