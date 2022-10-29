@@ -112,7 +112,7 @@ private fun WheelPicker(
         state.notifyCountChanged(count)
     }
 
-    val nestedScrollConnection = remember {
+    val nestedScrollConnection = remember(state) {
         object : NestedScrollConnection {
             override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
                 state.synchronizeCurrentIndexSnapshot()
@@ -206,7 +206,7 @@ private fun WheelPicker(
             LazyColumn(
                 state = state.lazyListState,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                reverseLayout = reverseLayoutUpdated,
+                reverseLayout = reverseLayout,
                 userScrollEnabled = userScrollEnabled,
                 modifier = Modifier.matchParentSize(),
                 content = lazyListScope,
@@ -215,7 +215,7 @@ private fun WheelPicker(
             LazyRow(
                 state = state.lazyListState,
                 verticalAlignment = Alignment.CenterVertically,
-                reverseLayout = reverseLayoutUpdated,
+                reverseLayout = reverseLayout,
                 userScrollEnabled = userScrollEnabled,
                 modifier = Modifier.matchParentSize(),
                 content = lazyListScope,
