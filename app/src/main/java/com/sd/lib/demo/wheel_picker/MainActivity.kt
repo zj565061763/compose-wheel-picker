@@ -147,14 +147,11 @@ private fun SampleObserveIndex() {
         modifier = Modifier.width(60.dp),
         count = 50,
         state = state,
-        onIndexChanged = {
-            logMsg { "onIndexChanged ${state.currentIndex}" }
-        },
     ) {
         Text(it.toString())
     }
 
-    // Observe currentIndex, It is same with the onIndexChanged callback.
+    // Observe currentIndex.
     LaunchedEffect(state) {
         snapshotFlow { state.currentIndex }
             .distinctUntilChanged()

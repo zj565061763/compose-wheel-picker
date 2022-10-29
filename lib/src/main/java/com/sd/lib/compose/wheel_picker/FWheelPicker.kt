@@ -31,7 +31,6 @@ fun FVerticalWheelPicker(
     unfocusedCount: Int = 1,
     userScrollEnabled: Boolean = true,
     reverseLayout: Boolean = false,
-    onIndexChanged: ((index: Int) -> Unit)? = null,
     focus: @Composable () -> Unit = {
         FWheelPickerFocusVertical()
     },
@@ -48,7 +47,6 @@ fun FVerticalWheelPicker(
         unfocusedCount = unfocusedCount,
         userScrollEnabled = userScrollEnabled,
         reverseLayout = reverseLayout,
-        onIndexChanged = onIndexChanged,
         focus = focus,
         contentWrapper = contentWrapper,
         content = content,
@@ -65,7 +63,6 @@ fun FHorizontalWheelPicker(
     unfocusedCount: Int = 1,
     userScrollEnabled: Boolean = true,
     reverseLayout: Boolean = false,
-    onIndexChanged: ((index: Int) -> Unit)? = null,
     focus: @Composable () -> Unit = {
         FWheelPickerFocusHorizontal()
     },
@@ -82,7 +79,6 @@ fun FHorizontalWheelPicker(
         unfocusedCount = unfocusedCount,
         userScrollEnabled = userScrollEnabled,
         reverseLayout = reverseLayout,
-        onIndexChanged = onIndexChanged,
         focus = focus,
         contentWrapper = contentWrapper,
         content = content,
@@ -100,7 +96,6 @@ private fun WheelPicker(
     unfocusedCount: Int,
     userScrollEnabled: Boolean,
     reverseLayout: Boolean,
-    onIndexChanged: ((index: Int) -> Unit)? = null,
     focus: @Composable () -> Unit,
     contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
@@ -159,16 +154,6 @@ private fun WheelPicker(
             override fun content(index: Int) {
                 contentScope.contentUpdate(index)
             }
-        }
-    }
-
-    if (onIndexChanged != null) {
-        val onIndexChangeUpdate by rememberUpdatedState(onIndexChanged)
-        LaunchedEffect(state) {
-            snapshotFlow { state.currentIndex }
-                .collect {
-                    onIndexChangeUpdate(it)
-                }
         }
     }
 
