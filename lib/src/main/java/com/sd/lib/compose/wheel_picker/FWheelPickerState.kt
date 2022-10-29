@@ -77,7 +77,8 @@ class FWheelPickerState(
     suspend fun animateScrollToIndex(
         @IntRange(from = 0) index: Int,
     ) {
-        lazyListState.animateScrollToItem(index.coerceAtLeast(0))
+        val safeIndex = index.coerceAtLeast(0)
+        lazyListState.animateScrollToItem(safeIndex)
         synchronizeCurrentIndex()
     }
 
