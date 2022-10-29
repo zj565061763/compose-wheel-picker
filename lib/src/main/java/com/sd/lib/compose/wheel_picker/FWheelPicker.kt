@@ -142,13 +142,14 @@ private fun WheelPicker(
         }
     }
 
+    val contentUpdated by rememberUpdatedState(content)
     val contentScope by remember(state) { mutableStateOf(WheelPickerContentScopeImpl(state)) }
-    val contentUpdate by rememberUpdatedState(content)
+
     val contentWrapperScope = remember(contentScope) {
         object : FWheelPickerContentWrapperScope {
             @Composable
             override fun content(index: Int) {
-                contentScope.contentUpdate(index)
+                contentUpdated.invoke(contentScope, index)
             }
         }
     }
@@ -188,7 +189,7 @@ private fun WheelPicker(
                     isVertical = isVertical,
                     itemSize = itemSize,
                 ) {
-                    contentWrapperScope.contentWrapper(index, state)
+                    contentWrapper.invoke(contentWrapperScope, index, state)
                 }
             }
 
