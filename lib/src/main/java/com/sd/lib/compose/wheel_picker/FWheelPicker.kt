@@ -171,7 +171,7 @@ private fun WheelPicker(
     ) {
 
         val lazyListScope: LazyListScope.() -> Unit = {
-            repeat(unfocusedCountUpdated) {
+            repeat(unfocusedCount) {
                 item {
                     ItemSizeBox(
                         isVertical = isVertical,
@@ -192,7 +192,7 @@ private fun WheelPicker(
                 }
             }
 
-            repeat(unfocusedCountUpdated) {
+            repeat(unfocusedCount) {
                 item {
                     ItemSizeBox(
                         isVertical = isVertical,
