@@ -120,39 +120,16 @@ private fun WheelPicker(
         state.notifyCountChanged(count)
     }
 
-    val density = LocalDensity.current
-    val itemSizePx = remember(density, itemSize) {
-        with(density) { itemSize.roundToPx() }
+    val nestedScrollConnection = remember(state) {
+        WheelPickerNestedScrollConnection(state)
+    }.apply {
+        this.isVertical = isVertical
+        this.itemSizePx = with(LocalDensity.current) { itemSize.roundToPx() }
+        this.reverseLayout = reverseLayout
     }
 
-    val nestedScrollConnection = remember(state, reverseLayout, itemSizePx) {
-        object : NestedScrollConnection {
-            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                state.synchronizeCurrentIndexSnapshot()
-                return super.onPostScroll(consumed, available, source)
-            }
-
-            override suspend fun onPreFling(available: Velocity): Velocity {
-                val currentIndex = state.synchronizeCurrentIndexSnapshot()
-                return if (currentIndex >= 0) {
-                    val flingItemCount = available.flingItemCount(
-                        isVertical = isVertical,
-                        itemSize = itemSizePx,
-                        decay = exponentialDecay(2f),
-                        reverseLayout = reverseLayout,
-                    )
-
-                    if (flingItemCount.absoluteValue > 0) {
-                        state.animateScrollToIndex(currentIndex - flingItemCount)
-                    } else {
-                        state.animateScrollToIndex(currentIndex)
-                    }
-                    available
-                } else {
-                    super.onPreFling(available)
-                }
-            }
-        }
+    val totalSize = remember(itemSize, unfocusedCount) {
+        itemSize * (unfocusedCount * 2 + 1)
     }
 
     val contentUpdated by rememberUpdatedState(content)
@@ -166,10 +143,6 @@ private fun WheelPicker(
                 contentUpdated.invoke(contentScope, index)
             }
         }
-    }
-
-    val totalSize = remember(itemSize, unfocusedCount) {
-        itemSize * (unfocusedCount * 2 + 1)
     }
 
     Box(
@@ -270,6 +243,40 @@ private fun ItemSizeBox(
         contentAlignment = Alignment.Center,
     ) {
         content()
+    }
+}
+
+private class WheelPickerNestedScrollConnection(
+    private val state: FWheelPickerState,
+) : NestedScrollConnection {
+    var isVertical = true
+    var itemSizePx = 0
+    var reverseLayout = false
+
+    override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+        state.synchronizeCurrentIndexSnapshot()
+        return super.onPostScroll(consumed, available, source)
+    }
+
+    override suspend fun onPreFling(available: Velocity): Velocity {
+        val currentIndex = state.synchronizeCurrentIndexSnapshot()
+        return if (currentIndex >= 0) {
+            val flingItemCount = available.flingItemCount(
+                isVertical = isVertical,
+                itemSize = itemSizePx,
+                decay = exponentialDecay(2f),
+                reverseLayout = reverseLayout,
+            )
+
+            if (flingItemCount.absoluteValue > 0) {
+                state.animateScrollToIndex(currentIndex - flingItemCount)
+            } else {
+                state.animateScrollToIndex(currentIndex)
+            }
+            available
+        } else {
+            super.onPreFling(available)
+        }
     }
 }
 
