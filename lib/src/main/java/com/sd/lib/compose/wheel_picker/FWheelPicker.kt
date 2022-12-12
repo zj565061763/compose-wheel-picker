@@ -33,7 +33,7 @@ fun FVerticalWheelPicker(
     reverseLayout: Boolean = false,
     debug: Boolean = false,
     focus: @Composable () -> Unit = { FWheelPickerFocusVertical() },
-    contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit = DefaultWheelPickerContentWrapper,
+    contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int) -> Unit = DefaultWheelPickerContentWrapper,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
@@ -65,7 +65,7 @@ fun FHorizontalWheelPicker(
     reverseLayout: Boolean = false,
     debug: Boolean = false,
     focus: @Composable () -> Unit = { FWheelPickerFocusHorizontal() },
-    contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit = DefaultWheelPickerContentWrapper,
+    contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int) -> Unit = DefaultWheelPickerContentWrapper,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
@@ -98,7 +98,7 @@ private fun WheelPicker(
     reverseLayout: Boolean,
     debug: Boolean,
     focus: @Composable () -> Unit,
-    contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit,
+    contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int) -> Unit,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     require(count >= 0) { "require count >= 0" }
@@ -151,9 +151,10 @@ private fun WheelPicker(
 
     val contentUpdated by rememberUpdatedState(content)
     val contentScope by remember(state) { mutableStateOf(WheelPickerContentScopeImpl(state)) }
-
     val contentWrapperScope = remember(contentScope) {
         object : FWheelPickerContentWrapperScope {
+            override val state: FWheelPickerState get() = contentScope.state
+
             @Composable
             override fun content(index: Int) {
                 contentUpdated.invoke(contentScope, index)
@@ -196,7 +197,7 @@ private fun WheelPicker(
                     isVertical = isVertical,
                     itemSize = itemSize,
                 ) {
-                    contentWrapper.invoke(contentWrapperScope, index, state)
+                    contentWrapper.invoke(contentWrapperScope, index)
                 }
             }
 
@@ -285,6 +286,8 @@ private class WheelPickerContentScopeImpl(
 
 
 interface FWheelPickerContentWrapperScope {
+    val state: FWheelPickerState
+
     @Composable
     fun content(index: Int)
 }

@@ -169,7 +169,7 @@ private fun SampleCustomContentWrapper() {
     FVerticalWheelPicker(
         modifier = Modifier.width(60.dp),
         count = 50,
-        contentWrapper = { index, state ->
+        contentWrapper = { index ->
             if (state.currentIndexSnapshot == index) {
                 content(index)
             } else {

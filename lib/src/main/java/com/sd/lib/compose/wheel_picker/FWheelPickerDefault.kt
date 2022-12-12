@@ -89,8 +89,8 @@ private val DefaultDividerColor: Color
 /**
  * Default content wrapper.
  */
-val DefaultWheelPickerContentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit =
-    { index, state ->
+val DefaultWheelPickerContentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int) -> Unit =
+    { index ->
         val isFocus = index == state.currentIndexSnapshot
         val alpha = if (isFocus) 1.0f else 0.3f
         val scale = if (isFocus) 1.0f else 0.8f
