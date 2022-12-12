@@ -72,32 +72,6 @@ fun FWheelPickerFocusHorizontal(
 }
 
 /**
- * Default content wrapper.
- */
-@Composable
-fun FWheelPickerContentWrapper(
-    modifier: Modifier = Modifier,
-    index: Int,
-    state: FWheelPickerState,
-    content: @Composable (Int) -> Unit,
-) {
-    val isFocus = index == state.currentIndexSnapshot
-    val targetAlpha = if (isFocus) 1.0f else 0.3f
-    val targetScale = if (isFocus) 1.0f else 0.8f
-    val animateScale by animateFloatAsState(targetScale)
-    Box(
-        modifier = modifier
-            .graphicsLayer {
-                this.alpha = targetAlpha
-                this.scaleX = animateScale
-                this.scaleY = animateScale
-            }
-    ) {
-        content(index)
-    }
-}
-
-/**
  * Default divider color.
  */
 private val DefaultDividerColor: Color
