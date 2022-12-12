@@ -156,7 +156,7 @@ private fun WheelPicker(
     }
 
     val contentUpdated by rememberUpdatedState(content)
-    val contentScope by remember(state) { mutableStateOf(WheelPickerContentScopeImpl(state)) }
+    val contentScope = remember(state) { WheelPickerContentScopeImpl(state) }
     val contentWrapperScope = remember(contentScope) {
         object : FWheelPickerContentWrapperScope {
             override val state: FWheelPickerState get() = contentScope.state
