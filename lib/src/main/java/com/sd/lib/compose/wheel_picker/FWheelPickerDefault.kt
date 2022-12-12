@@ -8,12 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-
 
 /**
  * The default implementation of focus view in vertical.
@@ -74,31 +72,58 @@ fun FWheelPickerFocusHorizontal(
 }
 
 /**
+ * Default content wrapper.
+ */
+@Composable
+fun FWheelPickerContentWrapper(
+    modifier: Modifier = Modifier,
+    index: Int,
+    state: FWheelPickerState,
+    content: @Composable (Int) -> Unit,
+) {
+    val isFocus = index == state.currentIndexSnapshot
+    val targetAlpha = if (isFocus) 1.0f else 0.3f
+    val targetScale = if (isFocus) 1.0f else 0.8f
+    val animateScale by animateFloatAsState(targetScale)
+    Box(
+        modifier = modifier
+            .graphicsLayer {
+                this.alpha = targetAlpha
+                this.scaleX = animateScale
+                this.scaleY = animateScale
+            }
+    ) {
+        content(index)
+    }
+}
+
+/**
  * Default divider color.
  */
 private val DefaultDividerColor: Color
     @Composable
-    get() {
-        return (if (isSystemInDarkTheme()) {
-            Color.White
-        } else {
-            Color.Black
-        }).copy(alpha = 0.2f)
-    }
+    get() = (if (isSystemInDarkTheme()) {
+        Color.White
+    } else {
+        Color.Black
+    }).copy(alpha = 0.2f)
 
 /**
  * Default content wrapper.
  */
-val DefaultWheelPickerContentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int) -> Unit =
-    { index ->
+val DefaultWheelPickerContentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int) -> Unit
+    get() = { index ->
         val isFocus = index == state.currentIndexSnapshot
-        val alpha = if (isFocus) 1.0f else 0.3f
-        val scale = if (isFocus) 1.0f else 0.8f
-        val animateScale by animateFloatAsState(scale)
+        val targetAlpha = if (isFocus) 1.0f else 0.3f
+        val targetScale = if (isFocus) 1.0f else 0.8f
+        val animateScale by animateFloatAsState(targetScale)
         Box(
             modifier = Modifier
-                .alpha(alpha)
-                .scale(animateScale),
+                .graphicsLayer {
+                    this.alpha = targetAlpha
+                    this.scaleX = animateScale
+                    this.scaleY = animateScale
+                }
         ) {
             content(index)
         }
