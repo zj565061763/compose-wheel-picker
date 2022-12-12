@@ -245,9 +245,9 @@ private fun ItemSizeBox(
 private class WheelPickerNestedScrollConnection(
     private val state: FWheelPickerState,
 ) : NestedScrollConnection {
-    var isVertical = true
-    var itemSizePx = 0
-    var reverseLayout = false
+    var isVertical: Boolean? = null
+    var itemSizePx: Int? = null
+    var reverseLayout: Boolean? = null
 
     override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
         state.synchronizeCurrentIndexSnapshot()
@@ -258,10 +258,10 @@ private class WheelPickerNestedScrollConnection(
         val currentIndex = state.synchronizeCurrentIndexSnapshot()
         return if (currentIndex >= 0) {
             val flingItemCount = available.flingItemCount(
-                isVertical = isVertical,
-                itemSize = itemSizePx,
+                isVertical = isVertical!!,
+                itemSize = itemSizePx!!,
                 decay = exponentialDecay(2f),
-                reverseLayout = reverseLayout,
+                reverseLayout = reverseLayout!!,
             )
 
             if (flingItemCount.absoluteValue > 0) {
