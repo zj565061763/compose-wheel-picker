@@ -21,6 +21,17 @@ import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import kotlin.math.absoluteValue
 
+interface FWheelPickerContentScope {
+    val state: FWheelPickerState
+}
+
+interface FWheelPickerContentWrapperScope {
+    val state: FWheelPickerState
+
+    @Composable
+    fun content(index: Int)
+}
+
 @Composable
 fun FVerticalWheelPicker(
     count: Int,
@@ -275,21 +286,10 @@ private fun Velocity.flingItemCount(
     return if (reverseLayout) -flingItemCount else flingItemCount
 }
 
-interface FWheelPickerContentScope {
-    val state: FWheelPickerState
-}
-
 private class WheelPickerContentScopeImpl(
     override val state: FWheelPickerState,
 ) : FWheelPickerContentScope
 
-
-interface FWheelPickerContentWrapperScope {
-    val state: FWheelPickerState
-
-    @Composable
-    fun content(index: Int)
-}
 
 internal inline fun logMsg(debug: Boolean, block: () -> String) {
     if (debug) {
