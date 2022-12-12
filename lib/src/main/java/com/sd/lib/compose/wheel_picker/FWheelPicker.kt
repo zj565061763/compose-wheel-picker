@@ -96,7 +96,7 @@ private fun WheelPicker(
     unfocusedCount: Int,
     userScrollEnabled: Boolean,
     reverseLayout: Boolean,
-    debug: Boolean = false,
+    debug: Boolean,
     focus: @Composable () -> Unit,
     contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int, state: FWheelPickerState) -> Unit,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
@@ -104,7 +104,7 @@ private fun WheelPicker(
     require(count >= 0) { "require count >= 0" }
     require(unfocusedCount >= 1) { "require unfocusedCount >= 1" }
 
-    state.isDebug = debug
+    state.debug = debug
 
     val densityUpdated by rememberUpdatedState(LocalDensity.current)
     val itemSizeUpdated by rememberUpdatedState(itemSize)

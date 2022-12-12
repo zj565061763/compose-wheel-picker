@@ -32,7 +32,7 @@ class FWheelPickerState(
     @IntRange(from = 0) initialIndex: Int = 0,
 ) : ScrollableState {
 
-    internal var isDebug = false
+    internal var debug = false
     internal val lazyListState = LazyListState()
 
     private var _currentIndex by mutableStateOf(-1)
@@ -79,7 +79,7 @@ class FWheelPickerState(
     suspend fun animateScrollToIndex(
         @IntRange(from = 0) index: Int,
     ) {
-        logMsg(isDebug) { "animateScrollToIndex index:$index" }
+        logMsg(debug) { "animateScrollToIndex index:$index" }
 
         val safeIndex = index.coerceAtLeast(0)
         lazyListState.animateScrollToItem(safeIndex)
@@ -90,7 +90,7 @@ class FWheelPickerState(
         @IntRange(from = 0) index: Int,
         pending: Boolean = true,
     ) {
-        logMsg(isDebug) { "scrollToIndex index:$index pending:$pending" }
+        logMsg(debug) { "scrollToIndex index:$index pending:$pending" }
 
         val safeIndex = index.coerceAtLeast(0)
         lazyListState.scrollToItem(safeIndex)
@@ -103,7 +103,7 @@ class FWheelPickerState(
 
     private suspend fun awaitScroll(index: Int) {
         if (_currentIndex == index) return
-        logMsg(isDebug) { "awaitScroll index $index start" }
+        logMsg(debug) { "awaitScroll index $index start" }
 
         // Resume last continuation before suspend.
         resumeAwaitScroll()
@@ -112,26 +112,26 @@ class FWheelPickerState(
         suspendCancellableCoroutine {
             _pendingIndexContinuation = it
             it.invokeOnCancellation {
-                logMsg(isDebug) { "awaitScroll index $index canceled" }
+                logMsg(debug) { "awaitScroll index $index canceled" }
                 _pendingIndexContinuation = null
                 _pendingIndex = null
 
             }
         }
 
-        logMsg(isDebug) { "awaitScroll index $index finish" }
+        logMsg(debug) { "awaitScroll index $index finish" }
     }
 
     private fun resumeAwaitScroll() {
         _pendingIndexContinuation?.let {
-            logMsg(isDebug) { "resumeAwaitScroll pendingIndex:$_pendingIndex" }
+            logMsg(debug) { "resumeAwaitScroll pendingIndex:$_pendingIndex" }
             it.resume(Unit)
             _pendingIndexContinuation = null
         }
     }
 
     internal suspend fun notifyCountChanged(count: Int) {
-        logMsg(isDebug) { "notifyCountChanged count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
+        logMsg(debug) { "notifyCountChanged count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
 
         _count = count
 
@@ -151,7 +151,7 @@ class FWheelPickerState(
     }
 
     private fun synchronizeCurrentIndex() {
-        logMsg(isDebug) { "synchronizeCurrentIndex" }
+        logMsg(debug) { "synchronizeCurrentIndex" }
         val index = synchronizeCurrentIndexSnapshot()
         setCurrentIndexInternal(index)
     }
@@ -159,7 +159,7 @@ class FWheelPickerState(
     private fun setCurrentIndexInternal(index: Int) {
         val safeIndex = index.coerceAtLeast(-1)
         if (_currentIndex != safeIndex) {
-            logMsg(isDebug) { "Current index changed $safeIndex" }
+            logMsg(debug) { "Current index changed $safeIndex" }
             _currentIndex = safeIndex
             _currentIndexSnapshot = safeIndex
             if (_pendingIndex == safeIndex) {
