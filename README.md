@@ -140,7 +140,7 @@ LaunchedEffect(state) {
 FVerticalWheelPicker(
     // ......
     // Content wrapper
-    contentWrapper = { index, state ->
+    contentWrapper = { index ->
         if (state.currentIndexSnapshot == index) {
             content(index)
         } else {
