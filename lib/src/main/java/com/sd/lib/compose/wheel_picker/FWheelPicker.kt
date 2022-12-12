@@ -104,7 +104,7 @@ private fun WheelPicker(
     require(count >= 0) { "require count >= 0" }
     require(unfocusedCount >= 1) { "require unfocusedCount >= 1" }
 
-    state.debug = debug
+    state.isDebug = debug
 
     val densityUpdated by rememberUpdatedState(LocalDensity.current)
     val itemSizeUpdated by rememberUpdatedState(itemSize)
@@ -289,6 +289,8 @@ interface FWheelPickerContentWrapperScope {
     fun content(index: Int)
 }
 
-internal inline fun logMsg(block: () -> String) {
-    Log.i("FWheelPicker", block())
+internal inline fun logMsg(debug: Boolean, block: () -> String) {
+    if (debug) {
+        Log.i("FWheelPicker", block())
+    }
 }
