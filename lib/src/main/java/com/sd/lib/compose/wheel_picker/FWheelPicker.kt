@@ -105,16 +105,16 @@ private fun WheelPicker(
     require(unfocusedCount >= 1) { "require unfocusedCount >= 1" }
 
     state.debug = debug
-
-    val densityUpdated by rememberUpdatedState(LocalDensity.current)
-    val itemSizeUpdated by rememberUpdatedState(itemSize)
-    val reverseLayoutUpdated by rememberUpdatedState(reverseLayout)
-
     LaunchedEffect(state, count) {
         state.notifyCountChanged(count)
     }
 
-    val nestedScrollConnection = remember(state) {
+    val density = LocalDensity.current
+    val itemSizePx = remember(density, itemSize) {
+        with(density) { itemSize.roundToPx() }
+    }
+
+    val nestedScrollConnection = remember(state, reverseLayout, itemSizePx) {
         object : NestedScrollConnection {
             override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
                 state.synchronizeCurrentIndexSnapshot()
@@ -126,9 +126,9 @@ private fun WheelPicker(
                 return if (currentIndex >= 0) {
                     val flingItemCount = available.flingItemCount(
                         isVertical = isVertical,
-                        itemSize = with(densityUpdated) { itemSizeUpdated.roundToPx() },
+                        itemSize = itemSizePx,
                         decay = exponentialDecay(2f),
-                        reverseLayout = reverseLayoutUpdated,
+                        reverseLayout = reverseLayout,
                     )
 
                     if (flingItemCount.absoluteValue > 0) {
