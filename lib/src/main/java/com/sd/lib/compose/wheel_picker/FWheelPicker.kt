@@ -108,12 +108,7 @@ private fun WheelPicker(
 
     val densityUpdated by rememberUpdatedState(LocalDensity.current)
     val itemSizeUpdated by rememberUpdatedState(itemSize)
-    val unfocusedCountUpdated by rememberUpdatedState(unfocusedCount)
     val reverseLayoutUpdated by rememberUpdatedState(reverseLayout)
-
-    val totalSize by remember {
-        derivedStateOf { itemSizeUpdated * (unfocusedCountUpdated * 2 + 1) }
-    }
 
     LaunchedEffect(state, count) {
         state.notifyCountChanged(count)
@@ -160,6 +155,10 @@ private fun WheelPicker(
                 contentUpdated.invoke(contentScope, index)
             }
         }
+    }
+
+    val totalSize = remember(itemSize, unfocusedCount) {
+        itemSize * (unfocusedCount * 2 + 1)
     }
 
     Box(
