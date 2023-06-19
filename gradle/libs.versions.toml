@@ -4,11 +4,11 @@ androidCompileSdk = "33"
 androidMinSdk = "21"
 androidTargetSdk = "33"
 
-androidGradlePlugin = "8.0.0"
-kotlin = "1.8.10"
+androidGradlePlugin = "8.0.1"
+kotlin = "1.8.21"
 
-composeBom = "2023.05.00"
-composeCompiler = "1.4.3"
+composeBom = "2023.06.00"
+composeCompiler = "1.4.7"
 
 [libraries]
 
