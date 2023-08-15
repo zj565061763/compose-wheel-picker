@@ -1,5 +1,6 @@
 package com.sd.lib.compose.wheel_picker
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.animation.core.calculateTargetValue
@@ -34,6 +35,7 @@ interface FWheelPickerContentWrapperScope {
     fun content(index: Int)
 }
 
+@SuppressLint("ModifierParameter")
 @Composable
 fun FVerticalWheelPicker(
     count: Int,
@@ -66,6 +68,7 @@ fun FVerticalWheelPicker(
     )
 }
 
+@SuppressLint("ModifierParameter")
 @Composable
 fun FHorizontalWheelPicker(
     count: Int,

@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
@@ -35,8 +36,8 @@ class FWheelPickerState(
     internal var debug = false
     internal val lazyListState = LazyListState()
 
-    private var _currentIndex by mutableStateOf(-1)
-    private var _currentIndexSnapshot by mutableStateOf(-1)
+    private var _currentIndex by mutableIntStateOf(-1)
+    private var _currentIndexSnapshot by mutableIntStateOf(-1)
 
     private var _pendingIndex: Int? = initialIndex
         set(value) {

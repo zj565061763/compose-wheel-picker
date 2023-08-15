@@ -1,14 +1,14 @@
 [versions]
 
-androidCompileSdk = "33"
+androidCompileSdk = "34"
 androidMinSdk = "21"
 androidTargetSdk = "33"
 
-androidGradlePlugin = "8.0.1"
-kotlin = "1.8.21"
+androidGradlePlugin = "8.1.0"
+kotlin = "1.9.0"
 
-composeBom = "2023.06.00"
-composeCompiler = "1.4.7"
+composeBom = "2023.08.00"
+composeCompiler = "1.5.1"
 
 [libraries]
 
@@ -20,7 +20,7 @@ androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 
-androidx-activity-compose = "androidx.activity:activity-compose:1.7.1"
+androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
 
 junit = "junit:junit:4.13.2"
 androidx-test-ext-junit = "androidx.test.ext:junit:1.1.5"
