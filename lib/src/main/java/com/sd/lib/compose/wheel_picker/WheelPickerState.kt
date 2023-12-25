@@ -38,6 +38,7 @@ class FWheelPickerState(
 
     private var _pendingIndex: Int? = initialIndex.coerceAtLeast(0)
         set(value) {
+            logMsg(debug) { "pendingIndex:$value" }
             field = value?.also {
                 check(it >= 0)
                 check(_count == 0)
@@ -136,6 +137,8 @@ class FWheelPickerState(
         if (count > 0) {
             _pendingIndex?.let { pendingIndex ->
                 scrollToIndex(pendingIndex, pending = false)
+                _pendingIndex = null
+                resumeAwaitIndex()
             }
             if (_currentIndex < 0) {
                 synchronizeCurrentIndex()
@@ -156,10 +159,6 @@ class FWheelPickerState(
             logMsg(debug) { "currentIndex:$index pendingIndex:$_pendingIndex" }
             _currentIndex = index
             _currentIndexSnapshot = index
-            if (_pendingIndex == index) {
-                _pendingIndex = null
-                resumeAwaitIndex()
-            }
         }
     }
 
