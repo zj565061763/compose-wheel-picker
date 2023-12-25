@@ -1,9 +1,6 @@
 package com.sd.lib.compose.wheel_picker
 
 import androidx.annotation.IntRange
-import androidx.compose.foundation.MutatePriority
-import androidx.compose.foundation.gestures.ScrollScope
-import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
@@ -32,8 +29,7 @@ fun rememberFWheelPickerState(
 
 class FWheelPickerState(
     initialIndex: Int = 0,
-) : ScrollableState {
-
+) {
     internal var debug = false
     internal val lazyListState = LazyListState()
 
@@ -72,8 +68,17 @@ class FWheelPickerState(
     val currentIndexSnapshot: Int
         get() = _currentIndexSnapshot
 
+    /**
+     * [LazyListState.interactionSource]
+     */
     val interactionSource: InteractionSource
         get() = lazyListState.interactionSource
+
+    /**
+     * [LazyListState.isScrollInProgress]
+     */
+    val isScrollInProgress: Boolean
+        get() = lazyListState.isScrollInProgress
 
     val hasPendingScroll: Boolean
         get() = _pendingIndex != null
@@ -192,20 +197,6 @@ class FWheelPickerState(
         } else {
             listInfo[1]
         }
-    }
-
-    override val isScrollInProgress: Boolean
-        get() = lazyListState.isScrollInProgress
-
-    override suspend fun scroll(
-        scrollPriority: MutatePriority,
-        block: suspend ScrollScope.() -> Unit,
-    ) {
-        lazyListState.scroll(scrollPriority, block)
-    }
-
-    override fun dispatchRawDelta(delta: Float): Float {
-        return lazyListState.dispatchRawDelta(delta)
     }
 
     companion object {
