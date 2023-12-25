@@ -83,17 +83,16 @@ class FWheelPickerState(
     }
 
     suspend fun scrollToIndex(
-        @IntRange(from = 0) index: Int,
+        index: Int,
         pending: Boolean = true,
     ) {
         logMsg(debug) { "scrollToIndex index:$index pending:$pending" }
 
-        val safeIndex = index.coerceAtLeast(0)
-        lazyListState.scrollToItem(safeIndex)
+        lazyListState.scrollToItem(index)
         synchronizeCurrentIndex()
 
         if (pending) {
-            awaitScroll(safeIndex)
+            awaitScroll(index)
         }
     }
 
