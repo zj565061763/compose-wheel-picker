@@ -20,12 +20,12 @@ import kotlin.coroutines.resume
 import kotlin.math.absoluteValue
 
 @Composable
-fun rememberFWheelPickerState(
-    @IntRange(from = 0) initialIndex: Int = 0,
-): FWheelPickerState = rememberSaveable(saver = FWheelPickerState.Saver) {
-    FWheelPickerState(
-        initialIndex = initialIndex,
-    )
+fun rememberFWheelPickerState(initialIndex: Int = 0): FWheelPickerState {
+    return rememberSaveable(saver = FWheelPickerState.Saver) {
+        FWheelPickerState(
+            initialIndex = initialIndex,
+        )
+    }
 }
 
 class FWheelPickerState(
