@@ -129,7 +129,7 @@ class FWheelPickerState(
 
         val maxIndex = count - 1
         if (_currentIndex > maxIndex) {
-            setCurrentIndexInternal(maxIndex)
+            setCurrentIndex(maxIndex)
         } else {
             _pendingIndex?.let { pendingIndex ->
                 if (count > pendingIndex) {
@@ -145,13 +145,13 @@ class FWheelPickerState(
     private fun synchronizeCurrentIndex() {
         logMsg(debug) { "synchronizeCurrentIndex" }
         val index = synchronizeCurrentIndexSnapshot()
-        setCurrentIndexInternal(index)
+        setCurrentIndex(index)
     }
 
-    private fun setCurrentIndexInternal(index: Int) {
+    private fun setCurrentIndex(index: Int) {
         val safeIndex = index.coerceAtLeast(-1)
         if (_currentIndex != safeIndex) {
-            logMsg(debug) { "Current index changed $safeIndex" }
+            logMsg(debug) { "currentIndex:$safeIndex pendingIndex:$_pendingIndex" }
             _currentIndex = safeIndex
             _currentIndexSnapshot = safeIndex
             if (_pendingIndex == safeIndex) {
