@@ -93,14 +93,14 @@ class FWheelPickerState(
 
         // Resume last continuation before suspend.
         resumeAwaitScroll()
-        _pendingIndex = index
 
         suspendCancellableCoroutine { cont ->
+            _pendingIndex = index
             _pendingIndexContinuation = cont
             cont.invokeOnCancellation {
                 logMsg(debug) { "awaitIndex:$index canceled" }
-                _pendingIndexContinuation = null
                 _pendingIndex = null
+                _pendingIndexContinuation = null
             }
         }
 
