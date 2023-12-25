@@ -131,8 +131,8 @@ class FWheelPickerState(
         _count = count
 
         val maxIndex = count - 1
-        if (_currentIndex > maxIndex) {
-            setCurrentIndex(maxIndex)
+        if (maxIndex < _currentIndex) {
+            scrollToIndex(maxIndex, pending = false)
         }
 
         if (count > 0) {
