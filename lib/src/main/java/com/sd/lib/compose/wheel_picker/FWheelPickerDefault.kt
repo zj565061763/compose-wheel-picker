@@ -3,7 +3,12 @@ package com.sd.lib.compose.wheel_picker
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -76,11 +81,10 @@ fun FWheelPickerFocusHorizontal(
  */
 private val DefaultDividerColor: Color
     @Composable
-    get() = (if (isSystemInDarkTheme()) {
-        Color.White
-    } else {
-        Color.Black
-    }).copy(alpha = 0.2f)
+    get() {
+        val color = if (isSystemInDarkTheme()) Color.White else Color.Black
+        return color.copy(alpha = 0.2f)
+    }
 
 /**
  * Default content wrapper.
