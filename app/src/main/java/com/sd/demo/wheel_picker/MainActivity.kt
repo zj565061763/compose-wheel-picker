@@ -49,7 +49,7 @@ private fun MainView() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        SampleObserveIndex()
+        SampleDefault()
     }
 }
 
@@ -59,6 +59,7 @@ private fun SampleDefault() {
         modifier = Modifier.width(60.dp),
         // Specified item count.
         count = 50,
+        debug = true,
     ) { index ->
         Text(index.toString())
     }
