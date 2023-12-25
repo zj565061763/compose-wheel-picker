@@ -136,6 +136,7 @@ private fun SampleScrollToIndex() {
         count = 50,
         // state
         state = state,
+        debug = true,
     ) {
         Text(it.toString())
     }
@@ -148,7 +149,6 @@ private fun SampleObserveIndex() {
         modifier = Modifier.width(60.dp),
         count = 50,
         state = state,
-        debug = true,
     ) {
         Text(it.toString())
     }
