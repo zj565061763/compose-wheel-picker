@@ -123,8 +123,8 @@ class FWheelPickerState(
         logMsg(debug) { "updateCount count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
 
         _count = count
-        val maxIndex = count - 1
 
+        val maxIndex = count - 1
         if (_currentIndex > maxIndex) {
             setCurrentIndex(maxIndex)
         }
