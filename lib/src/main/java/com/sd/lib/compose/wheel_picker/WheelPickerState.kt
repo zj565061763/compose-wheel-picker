@@ -32,6 +32,7 @@ class FWheelPickerState(
     internal var debug = false
     internal val lazyListState = LazyListState()
 
+    private var _count = 0
     private var _currentIndex by mutableIntStateOf(-1)
     private var _currentIndexSnapshot by mutableIntStateOf(-1)
 
@@ -41,11 +42,6 @@ class FWheelPickerState(
             if (value == null) resumeAwaitScroll()
         }
     private var _pendingIndexContinuation: Continuation<Unit>? = null
-
-    private var _count = 0
-        set(value) {
-            field = value.coerceAtLeast(0)
-        }
 
     /**
      * Index of picker when it is idle, -1 means that there is no data.
