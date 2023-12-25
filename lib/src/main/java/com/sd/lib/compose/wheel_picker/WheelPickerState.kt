@@ -126,7 +126,7 @@ class FWheelPickerState(
     }
 
     internal suspend fun updateCount(count: Int) {
-        logMsg(debug) { "updateCount count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
+        logMsg(debug) { "updateCount count:$count currentIndex:$_currentIndex" }
 
         _count = count
 
@@ -137,6 +137,7 @@ class FWheelPickerState(
 
         if (count > 0) {
             _pendingIndex?.let { pendingIndex ->
+                logMsg(debug) { "found pendingIndex:$pendingIndex" }
                 scrollToIndex(pendingIndex, pending = false)
                 _pendingIndex = null
                 resumeAwaitIndex()
@@ -149,7 +150,6 @@ class FWheelPickerState(
 
     private fun synchronizeCurrentIndex() {
         val index = synchronizeCurrentIndexSnapshot()
-        logMsg(debug) { "synchronizeCurrentIndex:$index currentIndex:$_currentIndex" }
         setCurrentIndex(index)
     }
 
