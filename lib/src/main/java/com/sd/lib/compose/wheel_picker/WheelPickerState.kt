@@ -126,19 +126,20 @@ class FWheelPickerState(
         logMsg(debug) { "updateCount count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
 
         _count = count
-
         val maxIndex = count - 1
+
         if (_currentIndex > maxIndex) {
             setCurrentIndex(maxIndex)
-        } else {
-            _pendingIndex?.let { pendingIndex ->
-                if (count > pendingIndex) {
-                    scrollToIndex(pendingIndex, pending = false)
-                }
+        }
+
+        _pendingIndex?.let { pendingIndex ->
+            if (count > pendingIndex) {
+                scrollToIndex(pendingIndex, pending = false)
             }
-            if (_currentIndex < 0) {
-                synchronizeCurrentIndex()
-            }
+        }
+
+        if (_currentIndex < 0 && count > 0) {
+            synchronizeCurrentIndex()
         }
     }
 
