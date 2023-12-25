@@ -123,7 +123,7 @@ private fun WheelPicker(
 
     state.debug = debug
     LaunchedEffect(state, count) {
-        state.notifyCountChanged(count)
+        state.updateCount(count)
     }
 
     val nestedScrollConnection = remember(state) {

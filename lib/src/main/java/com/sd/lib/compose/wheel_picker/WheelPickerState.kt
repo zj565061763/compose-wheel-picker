@@ -122,8 +122,8 @@ class FWheelPickerState(
         }
     }
 
-    internal suspend fun notifyCountChanged(count: Int) {
-        logMsg(debug) { "notifyCountChanged count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
+    internal suspend fun updateCount(count: Int) {
+        logMsg(debug) { "updateCount count:$count currentIndex:$_currentIndex pendingIndex:$_pendingIndex" }
 
         _count = count
 
