@@ -12,7 +12,7 @@ Android Compose wheel picker library based on LazyColumn in vertical and LazyRow
 | :----: | :----: | :----: | :----: | :----: |
 | <img src="https://thumbsnap.com/i/9MTLo4FX.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/18SBUBHg.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/qH5Z6wL8.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/EyjJoDB9.gif?0714" width="150px"/> | <img src="https://thumbsnap.com/i/DhyaDVkH.gif?0714" width="150px"/> |
 
-| Scroll to index | Observe index | Custom content wrapper | Reverse layout | Horizontal |
+| Scroll to index | Observe index | Custom display | Reverse layout | Horizontal |
 | :----: | :----: | :----: | :----: | :----: |
 | <img src="https://thumbsnap.com/i/5juVMWPU.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/6rHShNK4.gif?0714" width="200px"/> | <img src="https://thumbsnap.com/i/cLwTSLZC.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/TMtF439g.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/enX2Prc8.gif?0714" width="100px"/> |
 
@@ -134,13 +134,13 @@ LaunchedEffect(state) {
 }
 ```
 
-### Custom content wrapper
+### Custom display
 
 ```kotlin
 FVerticalWheelPicker(
     // ......
-    // Content wrapper
-    contentWrapper = { index ->
+    // Content display
+    display = { index ->
         if (state.currentIndexSnapshot == index) {
             content(index)
         } else {

@@ -11,7 +11,10 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -28,11 +31,9 @@ interface FWheelPickerContentScope {
     val state: FWheelPickerState
 }
 
-interface FWheelPickerContentWrapperScope {
-    val state: FWheelPickerState
-
+interface FWheelPickerDisplayScope : FWheelPickerContentScope {
     @Composable
-    fun content(index: Int)
+    fun Content(index: Int)
 }
 
 @SuppressLint("ModifierParameter")
@@ -48,7 +49,7 @@ fun FVerticalWheelPicker(
     reverseLayout: Boolean = false,
     debug: Boolean = false,
     focus: @Composable () -> Unit = { FWheelPickerFocusVertical() },
-    contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int) -> Unit = DefaultWheelPickerContentWrapper,
+    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = DefaultWheelPickerDisplay,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
@@ -63,7 +64,7 @@ fun FVerticalWheelPicker(
         reverseLayout = reverseLayout,
         debug = debug,
         focus = focus,
-        contentWrapper = contentWrapper,
+        display = display,
         content = content,
     )
 }
@@ -81,7 +82,7 @@ fun FHorizontalWheelPicker(
     reverseLayout: Boolean = false,
     debug: Boolean = false,
     focus: @Composable () -> Unit = { FWheelPickerFocusHorizontal() },
-    contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int) -> Unit = DefaultWheelPickerContentWrapper,
+    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = DefaultWheelPickerDisplay,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
@@ -96,7 +97,7 @@ fun FHorizontalWheelPicker(
         reverseLayout = reverseLayout,
         debug = debug,
         focus = focus,
-        contentWrapper = contentWrapper,
+        display = display,
         content = content,
     )
 }
@@ -114,7 +115,7 @@ private fun WheelPicker(
     reverseLayout: Boolean,
     debug: Boolean,
     focus: @Composable () -> Unit,
-    contentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int) -> Unit,
+    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit,
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     require(count >= 0) { "require count >= 0" }
@@ -137,9 +138,8 @@ private fun WheelPicker(
         itemSize * (unfocusedCount * 2 + 1)
     }
 
-    val contentWrapperScope = remember(state) {
-        val contentScope = WheelPickerContentScopeImpl(state)
-        FWheelPickerContentWrapperScopeImpl(contentScope)
+    val displayScope = remember(state) {
+        FWheelPickerDisplayScopeImpl(state)
     }.apply {
         this.content = content
     }
@@ -179,7 +179,7 @@ private fun WheelPicker(
                     isVertical = isVertical,
                     itemSize = itemSize,
                 ) {
-                    contentWrapperScope.contentWrapper(index)
+                    displayScope.display(index)
                 }
             }
 
@@ -292,20 +292,17 @@ private fun Velocity.flingItemCount(
     return if (reverseLayout) -flingItemCount else flingItemCount
 }
 
-private class WheelPickerContentScopeImpl(
+private typealias ContentComposable = @Composable FWheelPickerContentScope.(index: Int) -> Unit
+
+private class FWheelPickerDisplayScopeImpl(
     override val state: FWheelPickerState,
-) : FWheelPickerContentScope
+) : FWheelPickerDisplayScope {
 
-private class FWheelPickerContentWrapperScopeImpl(
-    private val contentScope: FWheelPickerContentScope
-) : FWheelPickerContentWrapperScope {
-    lateinit var content: @Composable FWheelPickerContentScope.(index: Int) -> Unit
-
-    override val state: FWheelPickerState get() = contentScope.state
+    var content: ContentComposable by mutableStateOf({})
 
     @Composable
-    override fun content(index: Int) {
-        contentScope.content(index)
+    override fun Content(index: Int) {
+        content(index)
     }
 }
 

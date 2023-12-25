@@ -87,22 +87,21 @@ private val DefaultDividerColor: Color
     }
 
 /**
- * Default content wrapper.
+ * Default display.
  */
-val DefaultWheelPickerContentWrapper: @Composable FWheelPickerContentWrapperScope.(index: Int) -> Unit
-    get() = { index ->
-        val isFocus = index == state.currentIndexSnapshot
-        val targetAlpha = if (isFocus) 1.0f else 0.3f
-        val targetScale = if (isFocus) 1.0f else 0.8f
-        val animateScale by animateFloatAsState(targetScale)
-        Box(
-            modifier = Modifier
-                .graphicsLayer {
-                    this.alpha = targetAlpha
-                    this.scaleX = animateScale
-                    this.scaleY = animateScale
-                }
-        ) {
-            content(index)
-        }
+val DefaultWheelPickerDisplay: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = { index ->
+    val isFocus = index == state.currentIndexSnapshot
+    val targetAlpha = if (isFocus) 1.0f else 0.3f
+    val targetScale = if (isFocus) 1.0f else 0.8f
+    val animateScale by animateFloatAsState(targetScale, label = "")
+    Box(
+        modifier = Modifier
+            .graphicsLayer {
+                this.alpha = targetAlpha
+                this.scaleX = animateScale
+                this.scaleY = animateScale
+            }
+    ) {
+        Content(index)
     }
+}

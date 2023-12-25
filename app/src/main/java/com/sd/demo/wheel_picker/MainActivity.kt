@@ -165,13 +165,13 @@ private fun SampleObserveIndex() {
 }
 
 @Composable
-private fun SampleCustomContentWrapper() {
+private fun SampleCustomDisplay() {
     FVerticalWheelPicker(
         modifier = Modifier.width(60.dp),
         count = 50,
-        contentWrapper = { index ->
+        display = { index ->
             if (state.currentIndexSnapshot == index) {
-                content(index)
+                Content(index)
             } else {
                 // Modify content if it is not in focus.
                 Box(
@@ -179,7 +179,7 @@ private fun SampleCustomContentWrapper() {
                         .rotate(90f)
                         .alpha(0.5f)
                 ) {
-                    content(index)
+                    Content(index)
                 }
             }
         }
