@@ -293,13 +293,11 @@ private fun Velocity.flingItemCount(
     return if (reverseLayout) -flingItemCount else flingItemCount
 }
 
-private typealias ContentComposable = @Composable FWheelPickerContentScope.(index: Int) -> Unit
-
 private class FWheelPickerDisplayScopeImpl(
     override val state: FWheelPickerState,
 ) : FWheelPickerDisplayScope {
 
-    var content: ContentComposable by mutableStateOf({})
+    var content: @Composable FWheelPickerContentScope.(index: Int) -> Unit by mutableStateOf({})
 
     @Composable
     override fun Content(index: Int) {
