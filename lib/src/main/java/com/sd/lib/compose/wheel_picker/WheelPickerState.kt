@@ -37,10 +37,6 @@ class FWheelPickerState(
     private var _currentIndexSnapshot by mutableIntStateOf(-1)
 
     private var _pendingIndex: Int? = initialIndex.coerceAtLeast(0)
-        set(value) {
-            field = value
-            if (value == null) resumeAwaitScroll()
-        }
     private var _pendingIndexContinuation: Continuation<Unit>? = null
 
     /**
@@ -87,29 +83,28 @@ class FWheelPickerState(
         synchronizeCurrentIndex()
 
         if (pending) {
-            awaitScroll(index)
+            awaitIndex(index)
         }
     }
 
-    private suspend fun awaitScroll(index: Int) {
+    private suspend fun awaitIndex(index: Int) {
         if (_currentIndex == index) return
-        logMsg(debug) { "awaitScroll index $index start" }
+        logMsg(debug) { "awaitIndex:$index start" }
 
         // Resume last continuation before suspend.
         resumeAwaitScroll()
-
         _pendingIndex = index
-        suspendCancellableCoroutine {
-            _pendingIndexContinuation = it
-            it.invokeOnCancellation {
-                logMsg(debug) { "awaitScroll index $index canceled" }
+
+        suspendCancellableCoroutine { cont ->
+            _pendingIndexContinuation = cont
+            cont.invokeOnCancellation {
+                logMsg(debug) { "awaitIndex:$index canceled" }
                 _pendingIndexContinuation = null
                 _pendingIndex = null
-
             }
         }
 
-        logMsg(debug) { "awaitScroll index $index finish" }
+        logMsg(debug) { "awaitIndex:$index finish" }
     }
 
     private fun resumeAwaitScroll() {
@@ -156,6 +151,7 @@ class FWheelPickerState(
             _currentIndexSnapshot = index
             if (_pendingIndex == index) {
                 _pendingIndex = null
+                resumeAwaitScroll()
             }
         }
     }
