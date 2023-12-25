@@ -92,7 +92,7 @@ class FWheelPickerState(
         logMsg(debug) { "awaitIndex:$index start" }
 
         // Resume last continuation before suspend.
-        resumeAwaitScroll()
+        resumeAwaitIndex()
 
         suspendCancellableCoroutine { cont ->
             _pendingIndex = index
@@ -107,9 +107,9 @@ class FWheelPickerState(
         logMsg(debug) { "awaitIndex:$index finish" }
     }
 
-    private fun resumeAwaitScroll() {
+    private fun resumeAwaitIndex() {
         _pendingIndexContinuation?.let {
-            logMsg(debug) { "resumeAwaitScroll pendingIndex:$_pendingIndex" }
+            logMsg(debug) { "resumeAwaitIndex pendingIndex:$_pendingIndex" }
             it.resume(Unit)
             _pendingIndexContinuation = null
         }
@@ -151,7 +151,7 @@ class FWheelPickerState(
             _currentIndexSnapshot = index
             if (_pendingIndex == index) {
                 _pendingIndex = null
-                resumeAwaitScroll()
+                resumeAwaitIndex()
             }
         }
     }
