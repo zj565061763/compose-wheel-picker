@@ -37,6 +37,9 @@ class FWheelPickerState(
     private var _currentIndexSnapshot by mutableIntStateOf(-1)
 
     private var _pendingIndex: Int? = initialIndex.coerceAtLeast(0)
+        set(value) {
+            field = value?.also { check(_count == 0) }
+        }
     private var _pendingIndexContinuation: Continuation<Unit>? = null
 
     /**
@@ -66,7 +69,7 @@ class FWheelPickerState(
     val isScrollInProgress: Boolean get() = lazyListState.isScrollInProgress
 
     suspend fun animateScrollToIndex(index: Int) {
-        logMsg(debug) { "animateScrollToIndex index:$index" }
+        logMsg(debug) { "animateScrollToIndex index:$index count:$_count" }
         @Suppress("NAME_SHADOWING")
         val index = index.coerceAtLeast(0)
 
@@ -75,7 +78,7 @@ class FWheelPickerState(
     }
 
     suspend fun scrollToIndex(index: Int, pending: Boolean = true) {
-        logMsg(debug) { "scrollToIndex index:$index pending:$pending" }
+        logMsg(debug) { "scrollToIndex index:$index pending:$pending count:$_count" }
         @Suppress("NAME_SHADOWING")
         val index = index.coerceAtLeast(0)
 
