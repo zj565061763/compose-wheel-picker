@@ -157,7 +157,7 @@ class FWheelPickerState(
         @Suppress("NAME_SHADOWING")
         val index = index.coerceAtLeast(-1)
         if (_currentIndex != index) {
-            logMsg(debug) { "currentIndex:$index pendingIndex:$_pendingIndex" }
+            logMsg(debug) { "setCurrentIndex:$index" }
             _currentIndex = index
             _currentIndexSnapshot = index
         }
