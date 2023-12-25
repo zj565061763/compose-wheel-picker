@@ -1,11 +1,14 @@
 package com.sd.lib.compose.wheel_picker
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.animation.core.calculateTargetValue
 import androidx.compose.animation.core.exponentialDecay
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
@@ -36,12 +39,11 @@ interface FWheelPickerDisplayScope : FWheelPickerContentScope {
     fun Content(index: Int)
 }
 
-@SuppressLint("ModifierParameter")
 @Composable
 fun FVerticalWheelPicker(
+    modifier: Modifier = Modifier,
     count: Int,
     state: FWheelPickerState = rememberFWheelPickerState(),
-    modifier: Modifier = Modifier,
     key: ((index: Int) -> Any)? = null,
     itemHeight: Dp = 35.dp,
     unfocusedCount: Int = 1,
@@ -53,10 +55,10 @@ fun FVerticalWheelPicker(
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
+        modifier = modifier,
         isVertical = true,
         count = count,
         state = state,
-        modifier = modifier,
         key = key,
         itemSize = itemHeight,
         unfocusedCount = unfocusedCount,
@@ -69,12 +71,11 @@ fun FVerticalWheelPicker(
     )
 }
 
-@SuppressLint("ModifierParameter")
 @Composable
 fun FHorizontalWheelPicker(
+    modifier: Modifier = Modifier,
     count: Int,
     state: FWheelPickerState = rememberFWheelPickerState(),
-    modifier: Modifier = Modifier,
     key: ((index: Int) -> Any)? = null,
     itemWidth: Dp = 35.dp,
     unfocusedCount: Int = 1,
@@ -86,10 +87,10 @@ fun FHorizontalWheelPicker(
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
+        modifier = modifier,
         isVertical = false,
         count = count,
         state = state,
-        modifier = modifier,
         key = key,
         itemSize = itemWidth,
         unfocusedCount = unfocusedCount,
@@ -104,10 +105,10 @@ fun FHorizontalWheelPicker(
 
 @Composable
 private fun WheelPicker(
+    modifier: Modifier,
     isVertical: Boolean,
     count: Int,
     state: FWheelPickerState,
-    modifier: Modifier,
     key: ((index: Int) -> Any)?,
     itemSize: Dp,
     unfocusedCount: Int,
