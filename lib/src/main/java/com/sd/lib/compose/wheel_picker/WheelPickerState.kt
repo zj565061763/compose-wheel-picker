@@ -1,6 +1,5 @@
 package com.sd.lib.compose.wheel_picker
 
-import androidx.annotation.IntRange
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
@@ -49,24 +48,20 @@ class FWheelPickerState(
         }
 
     /**
-     * Index of picker when it is idle.
+     * Index of picker when it is idle, -1 means that there is no data.
      *
      * Note that this property is observable and if you use it in the composable function
      * it will be recomposed on every change.
      */
-    @get:IntRange(from = -1)
-    val currentIndex: Int
-        get() = _currentIndex
+    val currentIndex: Int get() = _currentIndex
 
     /**
-     * Index of picker when it is idle or drag but not fling.
+     * Index of picker when it is idle or drag but not fling, -1 means that there is no data.
      *
      * Note that this property is observable and if you use it in the composable function
      * it will be recomposed on every change.
      */
-    @get:IntRange(from = -1)
-    val currentIndexSnapshot: Int
-        get() = _currentIndexSnapshot
+    val currentIndexSnapshot: Int get() = _currentIndexSnapshot
 
     /**
      * [LazyListState.interactionSource]
