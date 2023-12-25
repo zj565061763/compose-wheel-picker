@@ -163,7 +163,7 @@ private fun WheelPicker(
 
         val lazyListScope: LazyListScope.() -> Unit = {
             repeat(unfocusedCount) {
-                item {
+                item(contentType = "placeholder") {
                     ItemSizeBox(
                         isVertical = isVertical,
                         itemSize = itemSize,
@@ -184,7 +184,7 @@ private fun WheelPicker(
             }
 
             repeat(unfocusedCount) {
-                item {
+                item(contentType = "placeholder") {
                     ItemSizeBox(
                         isVertical = isVertical,
                         itemSize = itemSize,
