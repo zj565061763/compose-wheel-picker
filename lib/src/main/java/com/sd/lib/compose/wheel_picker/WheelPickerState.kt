@@ -38,7 +38,10 @@ class FWheelPickerState(
 
     private var _pendingIndex: Int? = initialIndex.coerceAtLeast(0)
         set(value) {
-            field = value?.also { check(_count == 0) }
+            field = value?.also {
+                check(it >= 0)
+                check(_count == 0)
+            }
         }
     private var _pendingIndexContinuation: Continuation<Unit>? = null
 
@@ -91,6 +94,7 @@ class FWheelPickerState(
     }
 
     private suspend fun awaitIndex(index: Int) {
+        if (index < 0) return
         if (_count > 0) return
         if (_currentIndex == index) return
         logMsg(debug) { "awaitIndex:$index start" }
@@ -129,14 +133,13 @@ class FWheelPickerState(
             setCurrentIndex(maxIndex)
         }
 
-        _pendingIndex?.let { pendingIndex ->
-            if (count > pendingIndex) {
+        if (count > 0) {
+            _pendingIndex?.let { pendingIndex ->
                 scrollToIndex(pendingIndex, pending = false)
             }
-        }
-
-        if (_currentIndex < 0 && count > 0) {
-            synchronizeCurrentIndex()
+            if (_currentIndex < 0) {
+                synchronizeCurrentIndex()
+            }
         }
     }
 
