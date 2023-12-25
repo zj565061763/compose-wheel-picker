@@ -8,12 +8,12 @@ Android Compose wheel picker library based on LazyColumn in vertical and LazyRow
 
 # Sample
 
-| Default | Item size | Unfocused count | Custom divider | Custom focus |
-| :----: | :----: | :----: | :----: | :----: |
+|                               Default                                |                              Item size                               |                           Unfocused count                            |                            Custom divider                            |                             Custom focus                             |
+|:--------------------------------------------------------------------:|:--------------------------------------------------------------------:|:--------------------------------------------------------------------:|:--------------------------------------------------------------------:|:--------------------------------------------------------------------:|
 | <img src="https://thumbsnap.com/i/9MTLo4FX.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/18SBUBHg.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/qH5Z6wL8.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/EyjJoDB9.gif?0714" width="150px"/> | <img src="https://thumbsnap.com/i/DhyaDVkH.gif?0714" width="150px"/> |
 
-| Scroll to index | Observe index | Custom display | Reverse layout | Horizontal |
-| :----: | :----: | :----: | :----: | :----: |
+|                           Scroll to index                            |                            Observe index                             |                            Custom display                            |                            Reverse layout                            |                              Horizontal                              |
+|:--------------------------------------------------------------------:|:--------------------------------------------------------------------:|:--------------------------------------------------------------------:|:--------------------------------------------------------------------:|:--------------------------------------------------------------------:|
 | <img src="https://thumbsnap.com/i/5juVMWPU.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/6rHShNK4.gif?0714" width="200px"/> | <img src="https://thumbsnap.com/i/cLwTSLZC.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/TMtF439g.gif?0714" width="100px"/> | <img src="https://thumbsnap.com/i/enX2Prc8.gif?0714" width="100px"/> |
 
 ### Default
@@ -73,9 +73,11 @@ FVerticalWheelPicker(
     // ......
     // Custom focus.
     focus = {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .border(width = 1.dp, color = Color.Gray))
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .border(width = 1.dp, color = Color.Gray)
+        )
     },
 ) {
     // ......
