@@ -90,17 +90,15 @@ private val DefaultDividerColor: Color
  * Default display.
  */
 val DefaultWheelPickerDisplay: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = { index ->
-    val isFocus = index == state.currentIndexSnapshot
-    val targetAlpha = if (isFocus) 1.0f else 0.3f
-    val targetScale = if (isFocus) 1.0f else 0.8f
+    val focused = index == state.currentIndexSnapshot
+    val targetScale = if (focused) 1.0f else 0.8f
     val animateScale by animateFloatAsState(targetScale, label = "")
     Box(
-        modifier = Modifier
-            .graphicsLayer {
-                this.alpha = targetAlpha
-                this.scaleX = animateScale
-                this.scaleY = animateScale
-            }
+        modifier = Modifier.graphicsLayer {
+            this.alpha = if (focused) 1.0f else 0.3f
+            this.scaleX = animateScale
+            this.scaleY = animateScale
+        }
     ) {
         Content(index)
     }
