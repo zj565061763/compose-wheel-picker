@@ -88,8 +88,9 @@ class FWheelPickerState(
     }
 
     private suspend fun awaitIndex(index: Int) {
+        if (_count > 0) return
         if (_currentIndex == index) return
-        logMsg(debug) { "awaitIndex:$index count:$_count start" }
+        logMsg(debug) { "awaitIndex:$index start" }
 
         // Resume last continuation before suspend.
         resumeAwaitIndex()
