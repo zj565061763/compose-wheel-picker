@@ -2,25 +2,32 @@
 
 androidCompileSdk = "34"
 androidMinSdk = "21"
-androidTargetSdk = "33"
+androidTargetSdk = "34"
 
-androidGradlePlugin = "8.1.1"
-kotlin = "1.9.0"
+androidGradlePlugin = "8.2.0"
+kotlin = "1.9.21"
 
-composeBom = "2023.08.00"
-composeCompiler = "1.5.2"
+compose = "1.5.4"
+composeCompiler = "1.5.6"
+composeMaterial3 = "1.1.2"
+
+lifecycle = "2.6.2"
 
 [libraries]
 
-androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
-androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
-androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
-androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
-androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
-androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
+androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 
-androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
+androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "composeMaterial3" }
+androidx-compose-material-ripple = { module = "androidx.compose.material:material-ripple", version.ref = "compose" }
+androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "compose" }
+
+androidx-activity-compose = "androidx.activity:activity-compose:1.8.2"
+androidx-lifecycle-viewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidx-lifecycle-runtimeCompose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 
 junit = "junit:junit:4.13.2"
 androidx-test-ext-junit = "androidx.test.ext:junit:1.1.5"
