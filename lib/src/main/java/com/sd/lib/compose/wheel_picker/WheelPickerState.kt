@@ -149,13 +149,7 @@ class FWheelPickerState(
     }
 
     private fun synchronizeCurrentIndex() {
-        val index = synchronizeCurrentIndexSnapshot()
-        setCurrentIndex(index)
-    }
-
-    private fun setCurrentIndex(index: Int) {
-        @Suppress("NAME_SHADOWING")
-        val index = index.coerceAtLeast(-1)
+        val index = synchronizeCurrentIndexSnapshot().coerceAtLeast(-1)
         if (_currentIndex != index) {
             logMsg(debug) { "setCurrentIndex:$index" }
             _currentIndex = index
