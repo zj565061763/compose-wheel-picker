@@ -110,8 +110,8 @@ class FWheelPickerState(
     private fun resumeAwaitIndex() {
         _pendingIndexContinuation?.let {
             logMsg(debug) { "resumeAwaitIndex pendingIndex:$_pendingIndex" }
-            it.resume(Unit)
             _pendingIndexContinuation = null
+            it.resume(Unit)
         }
     }
 
