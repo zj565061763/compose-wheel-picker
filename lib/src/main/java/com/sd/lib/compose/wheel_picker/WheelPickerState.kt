@@ -98,6 +98,7 @@ class FWheelPickerState(
         if (index < 0) return
         if (_count > 0) return
         if (_currentIndex == index) return
+
         logMsg(debug) { "awaitIndex:$index start" }
 
         // Resume last continuation before suspend.
