@@ -120,7 +120,7 @@ private fun WheelPicker(
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     require(count >= 0) { "require count >= 0" }
-    require(unfocusedCount >= 1) { "require unfocusedCount >= 1" }
+    require(unfocusedCount >= 0) { "require unfocusedCount >= 0" }
 
     state.debug = debug
     LaunchedEffect(state, count) {
