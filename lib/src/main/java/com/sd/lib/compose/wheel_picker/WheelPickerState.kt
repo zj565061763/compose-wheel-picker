@@ -138,8 +138,8 @@ class FWheelPickerState(
     }
 
     private fun synchronizeCurrentIndex() {
-        logMsg(debug) { "synchronizeCurrentIndex" }
         val index = synchronizeCurrentIndexSnapshot()
+        logMsg(debug) { "synchronizeCurrentIndex:$index currentIndex:$_currentIndex" }
         setCurrentIndex(index)
     }
 
