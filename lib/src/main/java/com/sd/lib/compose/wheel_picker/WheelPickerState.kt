@@ -20,7 +20,9 @@ import kotlin.coroutines.resume
 import kotlin.math.absoluteValue
 
 @Composable
-fun rememberFWheelPickerState(initialIndex: Int = 0): FWheelPickerState {
+fun rememberFWheelPickerState(
+    initialIndex: Int = 0
+): FWheelPickerState {
     return rememberSaveable(saver = FWheelPickerState.Saver) {
         FWheelPickerState(
             initialIndex = initialIndex,
@@ -29,7 +31,7 @@ fun rememberFWheelPickerState(initialIndex: Int = 0): FWheelPickerState {
 }
 
 class FWheelPickerState(
-    @IntRange(from = 0) initialIndex: Int = 0,
+    initialIndex: Int = 0,
 ) : ScrollableState {
 
     internal var debug = false
@@ -38,7 +40,7 @@ class FWheelPickerState(
     private var _currentIndex by mutableIntStateOf(-1)
     private var _currentIndexSnapshot by mutableIntStateOf(-1)
 
-    private var _pendingIndex: Int? = initialIndex
+    private var _pendingIndex: Int? = initialIndex.coerceAtLeast(0)
         set(value) {
             field = value
             if (value == null) resumeAwaitScroll()
