@@ -69,8 +69,6 @@ class FWheelPickerState(
      */
     val isScrollInProgress: Boolean get() = lazyListState.isScrollInProgress
 
-    val hasPendingScroll: Boolean get() = _pendingIndex != null
-
     suspend fun animateScrollToIndex(index: Int) {
         logMsg(debug) { "animateScrollToIndex index:$index" }
         @Suppress("NAME_SHADOWING")
