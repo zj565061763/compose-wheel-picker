@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import kotlin.math.absoluteValue
 
 interface FWheelPickerContentScope {
     val state: FWheelPickerState
@@ -249,9 +248,9 @@ private fun ItemSizeBox(
 private class WheelPickerNestedScrollConnection(
     private val state: FWheelPickerState,
 ) : NestedScrollConnection {
-    var isVertical: Boolean? = null
-    var itemSizePx: Int? = null
-    var reverseLayout: Boolean? = null
+    var isVertical: Boolean = true
+    var itemSizePx: Int = 0
+    var reverseLayout: Boolean = false
 
     override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
         state.synchronizeCurrentIndexSnapshot()
@@ -261,17 +260,17 @@ private class WheelPickerNestedScrollConnection(
     override suspend fun onPreFling(available: Velocity): Velocity {
         val currentIndex = state.synchronizeCurrentIndexSnapshot()
         return if (currentIndex >= 0) {
-            val flingItemCount = available.flingItemCount(
-                isVertical = isVertical!!,
-                itemSize = itemSizePx!!,
+            available.flingItemCount(
+                isVertical = isVertical,
+                itemSize = itemSizePx,
                 decay = exponentialDecay(2f),
-                reverseLayout = reverseLayout!!,
-            )
-
-            if (flingItemCount.absoluteValue > 0) {
-                state.animateScrollToIndex(currentIndex - flingItemCount)
-            } else {
-                state.animateScrollToIndex(currentIndex)
+                reverseLayout = reverseLayout,
+            ).let { flingItemCount ->
+                if (flingItemCount == 0) {
+                    state.animateScrollToIndex(currentIndex)
+                } else {
+                    state.animateScrollToIndex(currentIndex - flingItemCount)
+                }
             }
             available
         } else {
