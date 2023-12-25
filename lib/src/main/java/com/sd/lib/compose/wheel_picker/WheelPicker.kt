@@ -144,11 +144,6 @@ private fun WheelPicker(
         this.content = content
     }
 
-    var hasCount by remember { mutableStateOf(count > 0) }
-    LaunchedEffect(count) {
-        hasCount = count > 0
-    }
-
     Box(
         modifier = modifier
             .nestedScroll(nestedScrollConnection)
@@ -168,14 +163,12 @@ private fun WheelPicker(
 
         val lazyListScope: LazyListScope.() -> Unit = {
 
-            if (hasCount) {
-                repeat(unfocusedCount) {
-                    item(contentType = "placeholder") {
-                        ItemSizeBox(
-                            isVertical = isVertical,
-                            itemSize = itemSize,
-                        )
-                    }
+            repeat(unfocusedCount) {
+                item(contentType = "placeholder") {
+                    ItemSizeBox(
+                        isVertical = isVertical,
+                        itemSize = itemSize,
+                    )
                 }
             }
 
@@ -191,14 +184,12 @@ private fun WheelPicker(
                 }
             }
 
-            if (hasCount) {
-                repeat(unfocusedCount) {
-                    item(contentType = "placeholder") {
-                        ItemSizeBox(
-                            isVertical = isVertical,
-                            itemSize = itemSize,
-                        )
-                    }
+            repeat(unfocusedCount) {
+                item(contentType = "placeholder") {
+                    ItemSizeBox(
+                        isVertical = isVertical,
+                        itemSize = itemSize,
+                    )
                 }
             }
         }
