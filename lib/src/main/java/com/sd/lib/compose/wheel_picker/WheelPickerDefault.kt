@@ -89,7 +89,8 @@ private val DefaultDividerColor: Color
 /**
  * Default display.
  */
-val DefaultWheelPickerDisplay: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = { index ->
+@Composable
+fun FWheelPickerDisplayScope.DefaultWheelPickerDisplay(index: Int) {
     val focused = index == state.currentIndexSnapshot
     val targetScale = if (focused) 1.0f else 0.8f
     val animateScale by animateFloatAsState(targetScale, label = "")

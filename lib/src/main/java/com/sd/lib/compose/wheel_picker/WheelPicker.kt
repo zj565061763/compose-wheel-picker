@@ -50,7 +50,7 @@ fun FVerticalWheelPicker(
     reverseLayout: Boolean = false,
     debug: Boolean = false,
     focus: @Composable () -> Unit = { FWheelPickerFocusVertical() },
-    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = DefaultWheelPickerDisplay,
+    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = { DefaultWheelPickerDisplay(it) },
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
@@ -82,7 +82,7 @@ fun FHorizontalWheelPicker(
     reverseLayout: Boolean = false,
     debug: Boolean = false,
     focus: @Composable () -> Unit = { FWheelPickerFocusHorizontal() },
-    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = DefaultWheelPickerDisplay,
+    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = { DefaultWheelPickerDisplay(it) },
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
