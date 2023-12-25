@@ -77,18 +77,18 @@ class FWheelPickerState(
         get() = _pendingIndex != null
 
     suspend fun animateScrollToIndex(index: Int) {
+        logMsg(debug) { "animateScrollToIndex index:$index" }
         @Suppress("NAME_SHADOWING")
         val index = index.coerceAtLeast(0)
-        logMsg(debug) { "animateScrollToIndex index:$index" }
 
         lazyListState.animateScrollToItem(index)
         synchronizeCurrentIndex()
     }
 
     suspend fun scrollToIndex(index: Int, pending: Boolean = true) {
+        logMsg(debug) { "scrollToIndex index:$index pending:$pending" }
         @Suppress("NAME_SHADOWING")
         val index = index.coerceAtLeast(0)
-        logMsg(debug) { "scrollToIndex index:$index pending:$pending" }
 
         lazyListState.scrollToItem(index)
         synchronizeCurrentIndex()
