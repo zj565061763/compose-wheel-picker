@@ -4,14 +4,14 @@ androidCompileSdk = "34"
 androidMinSdk = "21"
 androidTargetSdk = "34"
 
-androidGradlePlugin = "8.2.0"
+androidGradlePlugin = "8.2.2"
 kotlin = "1.9.21"
 
-compose = "1.5.4"
-composeCompiler = "1.5.6"
+compose = "1.6.0"
+composeCompiler = "1.5.8"
 composeMaterial3 = "1.1.2"
 
-lifecycle = "2.6.2"
+lifecycle = "2.7.0"
 
 [libraries]
 
