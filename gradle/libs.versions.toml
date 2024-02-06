@@ -5,7 +5,7 @@ androidMinSdk = "21"
 androidTargetSdk = "34"
 
 androidGradlePlugin = "8.2.2"
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 
 compose = "1.6.0"
 composeCompiler = "1.5.8"
