@@ -6,7 +6,7 @@ plugins {
 
 val libGroupId = "com.sd.lib.android"
 val libArtifactId = "compose-wheel-picker"
-val libVersionName = "1.0.0-beta03"
+val libVersionName = "1.0.0-beta04"
 
 android {
     namespace = "com.sd.lib.compose.wheel_picker"
