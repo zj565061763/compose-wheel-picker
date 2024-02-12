@@ -7,9 +7,9 @@ androidTargetSdk = "34"
 androidGradlePlugin = "8.2.2"
 kotlin = "1.9.22"
 
-compose = "1.6.0"
-composeCompiler = "1.5.8"
-composeMaterial3 = "1.1.2"
+compose = "1.6.1"
+composeCompiler = "1.5.9"
+composeMaterial3 = "1.2.0"
 
 lifecycle = "2.7.0"
 
