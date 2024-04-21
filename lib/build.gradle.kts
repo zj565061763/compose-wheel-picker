@@ -6,13 +6,13 @@ plugins {
 
 val libGroupId = "com.sd.lib.android"
 val libArtifactId = "compose-wheel-picker"
-val libVersionName = "1.0.0-beta04"
+val libVersion = "1.0.0-beta04"
 
 android {
     namespace = "com.sd.lib.compose.wheel_picker"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
+        minSdk = 21
     }
 
     kotlinOptions {
@@ -46,7 +46,7 @@ publishing {
         create<MavenPublication>("release") {
             groupId = libGroupId
             artifactId = libArtifactId
-            version = libVersionName
+            version = libVersion
 
             afterEvaluate {
                 from(components["release"])

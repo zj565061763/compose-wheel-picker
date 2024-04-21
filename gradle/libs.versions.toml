@@ -1,15 +1,13 @@
 [versions]
 
 androidCompileSdk = "34"
-androidMinSdk = "21"
-androidTargetSdk = "34"
 
-androidGradlePlugin = "8.2.2"
-kotlin = "1.9.22"
+androidGradlePlugin = "8.3.2"
+kotlin = "1.9.23"
 
-compose = "1.6.1"
-composeCompiler = "1.5.9"
-composeMaterial3 = "1.2.0"
+compose = "1.6.6"
+composeCompiler = "1.5.12"
+composeMaterial3 = "1.2.1"
 
 lifecycle = "2.7.0"
 
