@@ -1,10 +1,8 @@
+[![](https://jitpack.io/v/zj565061763/compose-wheel-picker.svg)](https://jitpack.io/#zj565061763/compose-wheel-picker)
+
 # About
 
 Android Compose wheel picker library based on LazyColumn in vertical and LazyRow in horizontal.
-
-# Gradle
-
-[![](https://jitpack.io/v/zj565061763/compose-wheel-picker.svg)](https://jitpack.io/#zj565061763/compose-wheel-picker)
 
 # Sample
 
