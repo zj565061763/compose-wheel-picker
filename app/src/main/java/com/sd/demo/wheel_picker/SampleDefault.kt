@@ -3,6 +3,7 @@ package com.sd.demo.wheel_picker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -34,6 +35,7 @@ private fun Content() {
          .fillMaxSize()
          .padding(16.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Center,
    ) {
       Sample()
    }
