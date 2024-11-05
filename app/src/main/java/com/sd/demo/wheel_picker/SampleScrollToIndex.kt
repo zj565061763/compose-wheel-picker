@@ -48,7 +48,7 @@ private fun Sample() {
    val state = rememberFWheelPickerState(10)
 
    LaunchedEffect(state) {
-      delay(3_000)
+      delay(1_000)
       // Scroll to index.
       state.animateScrollToIndex(20)
    }
