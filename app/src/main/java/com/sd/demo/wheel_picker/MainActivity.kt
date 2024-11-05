@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
             Content(
                listActivity = listOf(
                   SampleDefault::class.java,
+                  SampleLargeUnfocusedCount::class.java,
                   SampleCustomFocus::class.java,
                   SampleCustomDisplay::class.java,
                   SampleObserveIndex::class.java,
