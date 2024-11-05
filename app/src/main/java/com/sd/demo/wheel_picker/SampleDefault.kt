@@ -48,7 +48,7 @@ private fun Sample() {
       // Set item height.
       itemHeight = 48.dp,
       // Set unfocused count.
-      unfocusedCount = 2,
+      unfocusedCount = 3,
    ) { index ->
       Text(index.toString())
    }
