@@ -50,7 +50,7 @@ class SampleDatePicker : ComponentActivity() {
 private fun Content(
    modifier: Modifier = Modifier,
 ) {
-   var date by remember { mutableStateOf(fCurrentDate()) }
+   var date by remember { mutableStateOf(fDate(2023, 2, 28)) }
    var showPicker by remember { mutableStateOf(false) }
 
    Box(
@@ -155,16 +155,15 @@ private fun PickerView(
    Row(
       modifier = modifier
          .fillMaxWidth()
-         .padding(horizontal = 10.dp),
+         .padding(16.dp),
       verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(10.dp),
+      horizontalArrangement = Arrangement.spacedBy(16.dp),
    ) {
       // Year
       FVerticalWheelPicker(
          modifier = Modifier.weight(1f),
          state = yearState,
          count = listYear.size,
-         unfocusedCount = 2,
       ) { index ->
          listYear.getOrNull(index)?.let { value ->
             Text(text = value.toString())
@@ -176,7 +175,6 @@ private fun PickerView(
          modifier = Modifier.weight(1f),
          state = monthState,
          count = listMonth.size,
-         unfocusedCount = 2,
       ) { index ->
          listMonth.getOrNull(index)?.let { value ->
             Text(text = value.toString())
@@ -188,7 +186,6 @@ private fun PickerView(
          modifier = Modifier.weight(1f),
          state = dayOfMonthState,
          count = listDayOfMonth.size,
-         unfocusedCount = 2,
       ) { index ->
          listDayOfMonth.getOrNull(index)?.let { value ->
             Text(text = value.toString())
