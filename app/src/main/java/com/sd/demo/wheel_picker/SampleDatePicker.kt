@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,35 +50,39 @@ class SampleDatePicker : ComponentActivity() {
 private fun Content(
    modifier: Modifier = Modifier,
 ) {
-   var selectDate by remember { mutableStateOf(fCurrentDate()) }
+   var date by remember { mutableStateOf(fCurrentDate()) }
    var showPicker by remember { mutableStateOf(false) }
 
-   Box(modifier = modifier.fillMaxSize()) {
-      TextButton(
+   Box(
+      modifier = modifier
+         .fillMaxSize()
+         .navigationBarsPadding()
+   ) {
+      Button(
          modifier = Modifier.align(Alignment.TopCenter),
          onClick = { showPicker = true }
       ) {
-         Text(text = selectDate.toString())
+         Text(text = date.toString())
       }
 
-      Picker(
-         modifier = Modifier.align(Alignment.Center),
-         show = showPicker,
-         date = selectDate,
-         onDone = { date ->
-            showPicker = false
-            if (date != null) {
-               selectDate = date
-            }
-         },
-      )
+      if (showPicker) {
+         Picker(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            date = date,
+            onDone = {
+               showPicker = false
+               if (it != null) {
+                  date = it
+               }
+            },
+         )
+      }
    }
 }
 
 @Composable
 private fun Picker(
    modifier: Modifier = Modifier,
-   show: Boolean,
    date: FDate,
    onDone: (FDate?) -> Unit,
 ) {
@@ -89,38 +93,36 @@ private fun Picker(
       )
    }
 
+   val state by selector.stateFlow.collectAsStateWithLifecycle()
+
    LaunchedEffect(selector, date) {
       selector.setDate(date)
    }
 
-   val state by selector.stateFlow.collectAsStateWithLifecycle()
+   Column(modifier = modifier.fillMaxWidth()) {
+      PickDateView(
+         listYear = state.listYear,
+         listMonth = state.listMonth,
+         listDayOfMonth = state.listDayOfMonth,
+         indexOfYear = state.indexOfYear,
+         indexOfMonth = state.indexOfMonth,
+         indexOfDayOfMonth = state.indexOfDayOfMonth,
+         onYearIndexChange = {
+            selector.selectYearWithIndex(it)
+         },
+         onMonthIndexChange = {
+            selector.selectMonthWithIndex(it)
+         },
+         onDayOfMonthIndexChange = {
+            selector.selectDayOfMonthWithIndex(it)
+         },
+      )
 
-   if (show) {
-      Column(modifier = modifier.fillMaxWidth()) {
-         PickDateView(
-            listYear = state.listYear,
-            listMonth = state.listMonth,
-            listDayOfMonth = state.listDayOfMonth,
-            indexOfYear = state.indexOfYear,
-            indexOfMonth = state.indexOfMonth,
-            indexOfDayOfMonth = state.indexOfDayOfMonth,
-            onYearIndexChange = {
-               selector.selectYearWithIndex(it)
-            },
-            onMonthIndexChange = {
-               selector.selectMonthWithIndex(it)
-            },
-            onDayOfMonthIndexChange = {
-               selector.selectDayOfMonthWithIndex(it)
-            },
-         )
-
-         Button(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = { onDone(selector.date) },
-         ) {
-            Text(text = "Done")
-         }
+      Button(
+         modifier = Modifier.align(Alignment.CenterHorizontally),
+         onClick = { onDone(selector.date) },
+      ) {
+         Text(text = "Done")
       }
    }
 }
