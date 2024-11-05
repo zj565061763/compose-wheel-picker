@@ -5,6 +5,7 @@ import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.animation.core.calculateTargetValue
 import androidx.compose.animation.core.exponentialDecay
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.width
@@ -119,9 +120,54 @@ private fun WheelPicker(
    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit,
    content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
-   require(count >= 0) { "require count >= 0" }
-   require(unfocusedCount >= 0) { "require unfocusedCount >= 0" }
+   require(count >= 0) { "Require count >= 0" }
+   require(unfocusedCount >= 0) { "Require unfocusedCount >= 0" }
+   require(itemSize > 0.dp) { "Require itemSize > 0.dp" }
 
+   SafeBox(
+      modifier = modifier,
+      isVertical = isVertical,
+      itemSize = itemSize,
+      unfocusedCount = unfocusedCount,
+   ) { safeUnfocusedCount ->
+      InternalWheelPicker(
+         isVertical = isVertical,
+         count = count,
+         state = state,
+         key = key,
+         itemSize = itemSize,
+         unfocusedCount = safeUnfocusedCount,
+         userScrollEnabled = userScrollEnabled,
+         reverseLayout = reverseLayout,
+         debug = debug,
+         focus = focus,
+         display = display,
+         content = content,
+      )
+
+      if (debug && unfocusedCount != safeUnfocusedCount) {
+         LaunchedEffect(unfocusedCount, safeUnfocusedCount) {
+            logMsg(true) { "unfocusedCount $unfocusedCount -> $safeUnfocusedCount" }
+         }
+      }
+   }
+}
+
+@Composable
+private fun InternalWheelPicker(
+   isVertical: Boolean,
+   count: Int,
+   state: FWheelPickerState,
+   key: ((index: Int) -> Any)?,
+   itemSize: Dp,
+   unfocusedCount: Int,
+   userScrollEnabled: Boolean,
+   reverseLayout: Boolean,
+   debug: Boolean,
+   focus: @Composable () -> Unit,
+   display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit,
+   content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
+) {
    state.debug = debug
    LaunchedEffect(state, count) {
       state.updateCount(count)
@@ -146,7 +192,7 @@ private fun WheelPicker(
    }
 
    Box(
-      modifier = modifier
+      modifier = Modifier
          .nestedScroll(nestedScrollConnection)
          .graphicsLayer {
             this.alpha = if (state.isReady) 1f else 0f
@@ -225,6 +271,31 @@ private fun WheelPicker(
       ) {
          focus()
       }
+   }
+}
+
+@Composable
+private fun SafeBox(
+   modifier: Modifier = Modifier,
+   isVertical: Boolean,
+   itemSize: Dp,
+   unfocusedCount: Int,
+   content: @Composable (safeUnfocusedCount: Int) -> Unit,
+) {
+   BoxWithConstraints(
+      modifier = modifier,
+      contentAlignment = Alignment.Center,
+   ) {
+      val maxSize = if (isVertical) maxHeight else maxWidth
+      val result = remember(maxSize, itemSize, unfocusedCount) {
+         val totalSize = itemSize * (unfocusedCount * 2 + 1)
+         if (totalSize <= maxSize) {
+            unfocusedCount
+         } else {
+            (((maxSize - itemSize) / 2f) / itemSize).toInt().coerceAtLeast(0)
+         }
+      }
+      content(result)
    }
 }
 
