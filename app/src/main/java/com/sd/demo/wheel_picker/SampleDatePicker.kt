@@ -19,12 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sd.demo.wheel_picker.ui.theme.AppTheme
+import com.sd.lib.compose.wheel_picker.CurrentIndex
 import com.sd.lib.compose.wheel_picker.FVerticalWheelPicker
 import com.sd.lib.compose.wheel_picker.rememberFWheelPickerState
 import com.sd.lib.date.FDate
@@ -148,20 +148,9 @@ private fun PickerView(
    val monthState = rememberFWheelPickerState(indexOfMonth)
    val dayOfMonthState = rememberFWheelPickerState(indexOfDayOfMonth)
 
-   LaunchedEffect(yearState) {
-      snapshotFlow { yearState.currentIndex }
-         .collect(onYearIndexChange)
-   }
-
-   LaunchedEffect(monthState) {
-      snapshotFlow { monthState.currentIndex }
-         .collect(onMonthIndexChange)
-   }
-
-   LaunchedEffect(dayOfMonthState) {
-      snapshotFlow { dayOfMonthState.currentIndex }
-         .collect(onDayOfMonthIndexChange)
-   }
+   yearState.CurrentIndex(onYearIndexChange)
+   monthState.CurrentIndex(onMonthIndexChange)
+   dayOfMonthState.CurrentIndex(onDayOfMonthIndexChange)
 
    Row(
       modifier = modifier

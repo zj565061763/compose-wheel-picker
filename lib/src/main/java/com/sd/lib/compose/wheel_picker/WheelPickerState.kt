@@ -4,11 +4,13 @@ import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -31,6 +33,17 @@ fun rememberFWheelPickerState(
          coroutineScope = coroutineScope,
          initialIndex = saveableIndex,
       )
+   }
+}
+
+@Composable
+fun FWheelPickerState.CurrentIndex(
+   block: suspend (Int) -> Unit,
+) {
+   val blockUpdated by rememberUpdatedState(block)
+   LaunchedEffect(this) {
+      snapshotFlow { currentIndex }
+         .collect { blockUpdated(it) }
    }
 }
 
