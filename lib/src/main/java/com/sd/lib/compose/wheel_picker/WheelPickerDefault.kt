@@ -94,8 +94,10 @@ fun FWheelPickerDisplayScope.DefaultWheelPickerDisplay(
    index: Int,
 ) {
    val focused = index == state.currentIndexSnapshot
-   val targetScale = if (focused) 1.0f else 0.8f
-   val animateScale by animateFloatAsState(targetScale, label = "")
+   val animateScale by animateFloatAsState(
+      targetValue = if (focused) 1.0f else 0.8f,
+      label = "Wheel picker item scale",
+   )
    Box(
       modifier = Modifier.graphicsLayer {
          this.alpha = if (focused) 1.0f else 0.3f
