@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.sd.demo.wheel_picker.SampleDatePicker" />
         <activity android:name="com.sd.demo.wheel_picker.SampleDefault" />
         <activity android:name="com.sd.demo.wheel_picker.SampleLargeUnfocusedCount" />
         <activity android:name="com.sd.demo.wheel_picker.SampleCustomFocus" />

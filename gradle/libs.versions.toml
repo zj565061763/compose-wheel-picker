@@ -31,6 +31,8 @@ junit = "junit:junit:4.13.2"
 androidx-test-ext-junit = "androidx.test.ext:junit:1.2.1"
 androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.6.1"
 
+sd-date = "com.github.zj565061763:date:1.0.0-alpha01"
+
 [plugins]
 
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

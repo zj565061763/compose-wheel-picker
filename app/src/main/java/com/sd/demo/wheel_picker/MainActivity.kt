@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
          AppTheme {
             Content(
                listActivity = listOf(
+                  SampleDatePicker::class.java,
                   SampleDefault::class.java,
                   SampleLargeUnfocusedCount::class.java,
                   SampleCustomFocus::class.java,
