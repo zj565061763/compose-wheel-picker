@@ -18,11 +18,11 @@ Android Compose wheel picker library based on LazyColumn in vertical and LazyRow
 
 ```kotlin
 FVerticalWheelPicker(
-    modifier = Modifier.width(60.dp),
-    // Specified item count.
-    count = 50,
+   modifier = Modifier.width(60.dp),
+   // Specified item count.
+   count = 50,
 ) { index ->
-    Text(index.toString())
+   Text(index.toString())
 }
 ```
 
@@ -30,11 +30,11 @@ FVerticalWheelPicker(
 
 ```kotlin
 FVerticalWheelPicker(
-    // ......
-    // Specified item height.
-    itemHeight = 60.dp,
+   // ......
+   // Specified item height.
+   itemHeight = 60.dp,
 ) {
-    // ......
+   // ......
 }
 ```
 
@@ -42,11 +42,11 @@ FVerticalWheelPicker(
 
 ```kotlin
 FVerticalWheelPicker(
-    // ......
-    // Specified unfocused count.
-    unfocusedCount = 2,
+   // ......
+   // Specified unfocused count.
+   unfocusedCount = 2,
 ) {
-    // ......
+   // ......
 }
 ```
 
@@ -54,13 +54,13 @@ FVerticalWheelPicker(
 
 ```kotlin
 FVerticalWheelPicker(
-    // ......
-    focus = {
-        // Custom divider.
-        FWheelPickerFocusVertical(dividerColor = Color.Red, dividerSize = 2.dp)
-    },
+   // ......
+   focus = {
+      // Custom divider.
+      FWheelPickerFocusVertical(dividerColor = Color.Red, dividerSize = 2.dp)
+   },
 ) {
-    // ......
+   // ......
 }
 ```
 
@@ -68,17 +68,17 @@ FVerticalWheelPicker(
 
 ```kotlin
 FVerticalWheelPicker(
-    // ......
-    // Custom focus.
-    focus = {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .border(width = 1.dp, color = Color.Gray)
-        )
-    },
+   // ......
+   // Custom focus.
+   focus = {
+      Box(
+         modifier = Modifier
+            .fillMaxSize()
+            .border(width = 1.dp, color = Color.Gray)
+      )
+   },
 ) {
-    // ......
+   // ......
 }
 ```
 
@@ -88,17 +88,17 @@ FVerticalWheelPicker(
 // Specified initial index.
 val state = rememberFWheelPickerState(10)
 LaunchedEffect(state) {
-    delay(2000)
-    // Scroll to index.
-    state.animateScrollToIndex(20)
+   delay(2000)
+   // Scroll to index.
+   state.animateScrollToIndex(20)
 }
 
 FVerticalWheelPicker(
-    // ......
-    // state
-    state = state,
+   // ......
+   // state
+   state = state,
 ) {
-    // ......
+   // ......
 }
 ```
 
@@ -110,27 +110,27 @@ FVerticalWheelPicker(
 ```kotlin
 val state = rememberFWheelPickerState()
 FVerticalWheelPicker(
-    // ......
-    // state
-    state = state,
+   // ......
+   // state
+   state = state,
 ) {
-    // ......
+   // ......
 }
 
 // Observe currentIndex.
 LaunchedEffect(state) {
-    snapshotFlow { state.currentIndex }
-        .collect {
-            Log.i(TAG, "currentIndex ${state.currentIndex}")
-        }
+   snapshotFlow { state.currentIndex }
+      .collect {
+         Log.i(TAG, "currentIndex ${state.currentIndex}")
+      }
 }
 
 // Observe currentIndexSnapshot.
 LaunchedEffect(state) {
-    snapshotFlow { state.currentIndexSnapshot }
-        .collect {
-            Log.i(TAG, "currentIndexSnapshot ${state.currentIndexSnapshot}")
-        }
+   snapshotFlow { state.currentIndexSnapshot }
+      .collect {
+         Log.i(TAG, "currentIndexSnapshot ${state.currentIndexSnapshot}")
+      }
 }
 ```
 
@@ -138,24 +138,24 @@ LaunchedEffect(state) {
 
 ```kotlin
 FVerticalWheelPicker(
-    // ......
-    // Content display
-    display = { index ->
-        if (state.currentIndexSnapshot == index) {
+   // ......
+   // Content display
+   display = { index ->
+      if (state.currentIndexSnapshot == index) {
+         content(index)
+      } else {
+         // Modify content if it is not in focus.
+         Box(
+            modifier = Modifier
+               .rotate(90f)
+               .alpha(0.5f)
+         ) {
             content(index)
-        } else {
-            // Modify content if it is not in focus.
-            Box(
-                modifier = Modifier
-                    .rotate(90f)
-                    .alpha(0.5f)
-            ) {
-                content(index)
-            }
-        }
-    }
+         }
+      }
+   }
 ) {
-    // ......
+   // ......
 }
 ```
 
@@ -163,11 +163,11 @@ FVerticalWheelPicker(
 
 ```kotlin
 FVerticalWheelPicker(
-    // ......
-    // Reverse layout.
-    reverseLayout = true,
+   // ......
+   // Reverse layout.
+   reverseLayout = true,
 ) {
-    // ......
+   // ......
 }
 ```
 
@@ -177,10 +177,10 @@ FVerticalWheelPicker(
 
 ```kotlin
 FHorizontalWheelPicker(
-    modifier = Modifier.height(60.dp),
-    // Specified item count.
-    count = 50,
+   modifier = Modifier.height(60.dp),
+   // Specified item count.
+   count = 50,
 ) { index ->
-    Text(index.toString())
+   Text(index.toString())
 }
 ```

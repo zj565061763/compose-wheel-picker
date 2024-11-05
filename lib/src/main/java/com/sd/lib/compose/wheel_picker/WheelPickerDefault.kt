@@ -23,28 +23,28 @@ import androidx.compose.ui.unit.dp
  */
 @Composable
 fun FWheelPickerFocusVertical(
-    modifier: Modifier = Modifier,
-    dividerSize: Dp = 1.dp,
-    dividerColor: Color = DefaultDividerColor,
+   modifier: Modifier = Modifier,
+   dividerSize: Dp = 1.dp,
+   dividerColor: Color = DefaultDividerColor,
 ) {
-    Box(
-        modifier = modifier.fillMaxSize()
-    ) {
-        Box(
-            modifier = Modifier
-                .background(dividerColor)
-                .height(dividerSize)
-                .fillMaxWidth()
-                .align(Alignment.TopCenter),
-        )
-        Box(
-            modifier = Modifier
-                .background(dividerColor)
-                .height(dividerSize)
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
-        )
-    }
+   Box(
+      modifier = modifier.fillMaxSize()
+   ) {
+      Box(
+         modifier = Modifier
+            .background(dividerColor)
+            .height(dividerSize)
+            .fillMaxWidth()
+            .align(Alignment.TopCenter),
+      )
+      Box(
+         modifier = Modifier
+            .background(dividerColor)
+            .height(dividerSize)
+            .fillMaxWidth()
+            .align(Alignment.BottomCenter),
+      )
+   }
 }
 
 /**
@@ -52,57 +52,57 @@ fun FWheelPickerFocusVertical(
  */
 @Composable
 fun FWheelPickerFocusHorizontal(
-    modifier: Modifier = Modifier,
-    dividerSize: Dp = 1.dp,
-    dividerColor: Color = DefaultDividerColor,
+   modifier: Modifier = Modifier,
+   dividerSize: Dp = 1.dp,
+   dividerColor: Color = DefaultDividerColor,
 ) {
-    Box(
-        modifier = modifier.fillMaxSize()
-    ) {
-        Box(
-            modifier = Modifier
-                .background(dividerColor)
-                .width(dividerSize)
-                .fillMaxHeight()
-                .align(Alignment.CenterStart),
-        )
-        Box(
-            modifier = Modifier
-                .background(dividerColor)
-                .width(dividerSize)
-                .fillMaxHeight()
-                .align(Alignment.CenterEnd),
-        )
-    }
+   Box(
+      modifier = modifier.fillMaxSize()
+   ) {
+      Box(
+         modifier = Modifier
+            .background(dividerColor)
+            .width(dividerSize)
+            .fillMaxHeight()
+            .align(Alignment.CenterStart),
+      )
+      Box(
+         modifier = Modifier
+            .background(dividerColor)
+            .width(dividerSize)
+            .fillMaxHeight()
+            .align(Alignment.CenterEnd),
+      )
+   }
 }
 
 /**
  * Default divider color.
  */
 private val DefaultDividerColor: Color
-    @Composable
-    get() {
-        val color = if (isSystemInDarkTheme()) Color.White else Color.Black
-        return color.copy(alpha = 0.2f)
-    }
+   @Composable
+   get() {
+      val color = if (isSystemInDarkTheme()) Color.White else Color.Black
+      return color.copy(alpha = 0.2f)
+   }
 
 /**
  * Default display.
  */
 @Composable
 fun FWheelPickerDisplayScope.DefaultWheelPickerDisplay(
-    index: Int,
+   index: Int,
 ) {
-    val focused = index == state.currentIndexSnapshot
-    val targetScale = if (focused) 1.0f else 0.8f
-    val animateScale by animateFloatAsState(targetScale, label = "")
-    Box(
-        modifier = Modifier.graphicsLayer {
-            this.alpha = if (focused) 1.0f else 0.3f
-            this.scaleX = animateScale
-            this.scaleY = animateScale
-        }
-    ) {
-        Content(index)
-    }
+   val focused = index == state.currentIndexSnapshot
+   val targetScale = if (focused) 1.0f else 0.8f
+   val animateScale by animateFloatAsState(targetScale, label = "")
+   Box(
+      modifier = Modifier.graphicsLayer {
+         this.alpha = if (focused) 1.0f else 0.3f
+         this.scaleX = animateScale
+         this.scaleY = animateScale
+      }
+   ) {
+      Content(index)
+   }
 }
