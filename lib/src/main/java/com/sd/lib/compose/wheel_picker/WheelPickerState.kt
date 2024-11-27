@@ -8,16 +8,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import kotlinx.coroutines.CancellableContinuation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.math.absoluteValue
@@ -26,12 +22,9 @@ import kotlin.math.absoluteValue
 fun rememberFWheelPickerState(
    initialIndex: Int = 0,
 ): FWheelPickerState {
-   val coroutineScope = rememberCoroutineScope()
-   val saveableIndex = rememberSaveable { initialIndex }
-   return remember(coroutineScope) {
+   return rememberSaveable(saver = FWheelPickerState.Saver) {
       FWheelPickerState(
-         coroutineScope = coroutineScope,
-         initialIndex = saveableIndex,
+         initialIndex = initialIndex,
       )
    }
 }
@@ -48,7 +41,6 @@ fun FWheelPickerState.CurrentIndex(
 }
 
 class FWheelPickerState internal constructor(
-   coroutineScope: CoroutineScope,
    initialIndex: Int,
 ) {
    internal var debug = false
@@ -206,16 +198,10 @@ class FWheelPickerState internal constructor(
       }
    }
 
-   init {
-      coroutineScope.launch {
-         snapshotFlow { lazyListState.isScrollInProgress }
-            .distinctUntilChanged()
-            .collect {
-               logMsg(debug) { "isScrollInProgress:$it" }
-               if (!it) {
-                  synchronizeCurrentIndex()
-               }
-            }
-      }
+   companion object {
+      val Saver = listSaver(
+         save = { listOf(it.currentIndex) },
+         restore = { FWheelPickerState(initialIndex = it[0]) },
+      )
    }
 }
